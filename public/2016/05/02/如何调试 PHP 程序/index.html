@@ -1,0 +1,857 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/vendors/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/vendors/font-awesome/css/font-awesome.min.css?v=4.4.0" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.0.1" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="php-CodeIgniter," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.0.1" />
+
+
+
+
+
+
+<meta name="description" content="一.PHP 自带的调试功能1.修改 php.ini（1）开发环境需要打开报错输出显示，方便开发者调试。1display_errors = On
+（2）生产环境不能直接将错误输出，而是记入日志，以免透露路径、数据库连接、数据表等信息遭到黑客攻击。123display_errors = Offlog_errors = Onerror_log = /path/
+
+
+
+
+
+路径方式
+是否 append
+如">
+<meta property="og:type" content="article">
+<meta property="og:title" content="如何调试 PHP 程序">
+<meta property="og:url" content="http://yoursite.com/2016/05/02/如何调试 PHP 程序/index.html">
+<meta property="og:site_name" content="小蒋不素小蒋">
+<meta property="og:description" content="一.PHP 自带的调试功能1.修改 php.ini（1）开发环境需要打开报错输出显示，方便开发者调试。1display_errors = On
+（2）生产环境不能直接将错误输出，而是记入日志，以免透露路径、数据库连接、数据表等信息遭到黑客攻击。123display_errors = Offlog_errors = Onerror_log = /path/
+
+
+
+
+
+路径方式
+是否 append
+如">
+<meta property="og:updated_time" content="2016-09-29T09:54:39.409Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="如何调试 PHP 程序">
+<meta name="twitter:description" content="一.PHP 自带的调试功能1.修改 php.ini（1）开发环境需要打开报错输出显示，方便开发者调试。1display_errors = On
+（2）生产环境不能直接将错误输出，而是记入日志，以免透露路径、数据库连接、数据表等信息遭到黑客攻击。123display_errors = Offlog_errors = Onerror_log = /path/
+
+
+
+
+
+路径方式
+是否 append
+如">
+
+
+
+<script type="text/javascript" id="hexo.configuration">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    scheme: 'Pisces',
+    sidebar: {"position":"left","display":"post"},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: 0,
+      author: '博主'
+    }
+  };
+</script>
+
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2016/05/02/如何调试 PHP 程序/"/>
+
+  <title> 如何调试 PHP 程序 | 小蒋不素小蒋 </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "//hm.baidu.com/hm.js?ca9c79cc2c25ea90183640659d5e0d17";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-meta ">
+  
+
+  <div class="custom-logo-site-title">
+    <a href="/"  class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <span class="site-title">小蒋不素小蒋</span>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+  <p class="site-subtitle">点滴生活与技术</p>
+</div>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-commonweal">
+          <a href="/404.html" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-heartbeat"></i> <br />
+            
+            公益404
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="st-search-show-outputs">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <form class="site-search-form">
+  <input type="text" id="st-search-input" class="st-search-input st-default-search-input" />
+</form>
+
+<script type="text/javascript">
+  (function(w,d,t,u,n,s,e){w['SwiftypeObject']=n;w[n]=w[n]||function(){
+    (w[n].q=w[n].q||[]).push(arguments);};s=d.createElement(t);
+    e=d.getElementsByTagName(t)[0];s.async=1;s.src=u;e.parentNode.insertBefore(s,e);
+  })(window,document,'script','//s.swiftypecdn.com/install/v2/st.js','_st');
+
+  _st('install', 'GzywR78iuG9Hcfx3PR-1','2.0.0');
+</script>
+
+
+
+    </div>
+  
+</nav>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                如何调试 PHP 程序
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2016-05-02T15:54:00+08:00" content="2016-05-02">
+              2016-05-02
+            </time>
+          </span>
+
+          
+
+          
+            
+              <span class="post-comments-count">
+                &nbsp; | &nbsp;
+                <a href="/2016/05/02/如何调试 PHP 程序/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/05/02/如何调试 PHP 程序/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+          
+          
+             <span id="/2016/05/02/如何调试 PHP 程序/" class="leancloud_visitors" data-flag-title="如何调试 PHP 程序">
+               &nbsp; | &nbsp;
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               <span class="post-meta-item-text">阅读次数 </span>
+               <span class="leancloud-visitors-count"></span>
+              </span>
+          
+
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h2 id="一-PHP-自带的调试功能"><a href="#一-PHP-自带的调试功能" class="headerlink" title="一.PHP 自带的调试功能"></a>一.PHP 自带的调试功能</h2><h4 id="1-修改-php-ini"><a href="#1-修改-php-ini" class="headerlink" title="1.修改 php.ini"></a>1.修改 php.ini</h4><h6 id="（1）开发环境"><a href="#（1）开发环境" class="headerlink" title="（1）开发环境"></a>（1）开发环境</h6><p>需要打开报错输出显示，方便开发者调试。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">display_errors = On</div></pre></td></tr></table></figure></p>
+<h6 id="（2）生产环境"><a href="#（2）生产环境" class="headerlink" title="（2）生产环境"></a>（2）生产环境</h6><p>不能直接将错误输出，而是记入日志，以免透露路径、数据库连接、数据表等信息遭到黑客攻击。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">display_errors = Off</div><div class="line">log_errors = On</div><div class="line">error_log = /path/</div></pre></td></tr></table></figure></p>
+<blockquote>
+<table>
+<thead>
+<tr>
+<th></th>
+<th style="text-align:center">路径方式</th>
+<th style="text-align:center">是否 append</th>
+<th style="text-align:center">如果目录指向的文件不存在</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>error_log = php_errors.log</td>
+<td style="text-align:center">相对路径</td>
+<td style="text-align:center">√</td>
+<td style="text-align:center">自动创建</td>
+</tr>
+<tr>
+<td>error_log = E:/phpStudy/php53n/php_errors.log</td>
+<td style="text-align:center">绝对路径</td>
+<td style="text-align:center">√</td>
+<td style="text-align:center">自动创建</td>
+</tr>
+</tbody>
+</table>
+</blockquote>
+<h4 id="2-利用-PHP-file-put-contents-函数"><a href="#2-利用-PHP-file-put-contents-函数" class="headerlink" title="2.利用 PHP file_put_contents() 函数"></a>2.利用 PHP file_put_contents() 函数</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">$a = 123;</div><div class="line">file_put_contents(&quot;error.log&quot;, &quot;a is : &quot; . $a . PHP_EOL, FILE_APPEND);</div></pre></td></tr></table></figure>
+<blockquote>
+<p>1.如果目录指向的文件不存在怎么办？<br>  会自动创建。</p>
+<p>2.PHP_EOL 是什么？<br>  换行符。<br>  unix 系列用 \n<br>  windows 系列用 \r\n<br>  mac 用 \r<br>  PHP 中可以用 PHP_EOL 来替代，以提高代码的源代码级可移植性。</p>
+<p>3.Linux 下可能有读写权限，建议先放开权限<br>  chmod 777 文件名<br>  chmod -R 777 文件夹 （递归该文件夹下所有文件）</p>
+</blockquote>
+<h4 id="3-利用-PHP-file-put-contents-函数"><a href="#3-利用-PHP-file-put-contents-函数" class="headerlink" title="3.利用 PHP file_put_contents() 函数"></a>3.利用 PHP file_put_contents() 函数</h4><h6 id="（1）少用错误控制运算符”-”"><a href="#（1）少用错误控制运算符”-”" class="headerlink" title="（1）少用错误控制运算符”@”"></a>（1）少用错误控制运算符”@”</h6><p>PHP 支持一个错误控制运算符：@ 。当将其放置在一个 PHP 表达式之前，该表达式可能产生的任何错误信息都被忽略掉。</p>
+<p>如果一个缺陷发生在这个表达式中，从PHP的输出中看不到任何错误，这增加了调试的难度。所以能不用则不用。</p>
+<blockquote>
+<p>@ 运算符只对表达式有效。对新手来说一个简单的规则就是：如果能从某处得到值，就能在它前面加上 @ 运算符。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">$a = 123;</div><div class="line">echo @$b; //不报错</div></pre></td></tr></table></figure></p>
+</blockquote>
+<h6 id="（2）有些函数自带有-debug-功能"><a href="#（2）有些函数自带有-debug-功能" class="headerlink" title="（2）有些函数自带有 debug 功能"></a>（2）有些函数自带有 debug 功能</h6><p>例如：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$fp = fsockopen(&quot;www.example.com&quot;, 80, $errno, $errstr, 30);</div></pre></td></tr></table></figure>
+<p>一般这样的函数（主要是网络通信类的），会自己提供调试参数：$errno 和 $errstr 。</p>
+<p>你可以加一句：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">if (!$fp) echo &quot;$errstr ($errno)&lt;br /&gt;\n&quot;;</div></pre></td></tr></table></figure></p>
+<p>就能看到连接失败的原因了。</p>
+<p>这些函数有：fsockopen，pfsockopen，stream_socket_server，stream_socket_client 等。</p>
+<p>还有些函数是调试一个功能用的，比如：mysql_errno，socket_last_error，socket_strerror 等。</p>
+<h2 id="二-引进调试工具"><a href="#二-引进调试工具" class="headerlink" title="二.引进调试工具"></a>二.引进调试工具</h2><p>如：Xdebug 。</p>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/php-CodeIgniter/" rel="tag">#php-CodeIgniter</a>
+          
+        </div>
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2016/05/01/Win10 系统 80 端口被 pid=4 的 System 进程占用 -- 解决方法/" rel="next" title="Win10 系统 80 端口被 pid=4 的 System 进程占用 -- 解决方法">
+                <i class="fa fa-chevron-left"></i> Win10 系统 80 端口被 pid=4 的 System 进程占用 -- 解决方法
+              </a>
+            
+          </div>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2016/05/22/Mysql 在高并发情况下，防止库存超卖而小于 0 的解决方案/" rel="prev" title="Mysql 在高并发情况下，防止库存超卖而小于 0 的解决方案">
+                Mysql 在高并发情况下，防止库存超卖而小于 0 的解决方案 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div class="ds-thread" data-thread-key="2016/05/02/如何调试 PHP 程序/"
+           data-title="如何调试 PHP 程序" data-url="http://yoursite.com/2016/05/02/如何调试 PHP 程序/">
+      </div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel ">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="http://cn.gravatar.com/userimage/110826796/0f9e16e4ae0776f52a4fb70bf02a5832.jpg?size=200"
+               alt="蒋成智" />
+          <p class="site-author-name" itemprop="name">蒋成智</p>
+          <p class="site-description motion-element" itemprop="description"></p>
+        </div>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/archives">
+              <span class="site-state-item-count">23</span>
+              <span class="site-state-item-name">日志</span>
+            </a>
+          </div>
+
+          
+
+          
+            <div class="site-state-item site-state-tags">
+              <a href="/tags">
+                <span class="site-state-item-count">5</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+        
+        
+
+        
+        
+
+      </section>
+
+      
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+            
+              
+            
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#一-PHP-自带的调试功能"><span class="nav-number">1.</span> <span class="nav-text">一.PHP 自带的调试功能</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-修改-php-ini"><span class="nav-number">1.0.1.</span> <span class="nav-text">1.修改 php.ini</span></a><ol class="nav-child"><li class="nav-item nav-level-6"><a class="nav-link" href="#（1）开发环境"><span class="nav-number">1.0.1.0.1.</span> <span class="nav-text">（1）开发环境</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#（2）生产环境"><span class="nav-number">1.0.1.0.2.</span> <span class="nav-text">（2）生产环境</span></a></li></ol></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-利用-PHP-file-put-contents-函数"><span class="nav-number">1.0.2.</span> <span class="nav-text">2.利用 PHP file_put_contents() 函数</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-利用-PHP-file-put-contents-函数"><span class="nav-number">1.0.3.</span> <span class="nav-text">3.利用 PHP file_put_contents() 函数</span></a><ol class="nav-child"><li class="nav-item nav-level-6"><a class="nav-link" href="#（1）少用错误控制运算符”-”"><span class="nav-number">1.0.3.0.1.</span> <span class="nav-text">（1）少用错误控制运算符”@”</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#（2）有些函数自带有-debug-功能"><span class="nav-number">1.0.3.0.2.</span> <span class="nav-text">（2）有些函数自带有 debug 功能</span></a></li></ol></li></ol></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#二-引进调试工具"><span class="nav-number">2.</span> <span class="nav-text">二.引进调试工具</span></a></li></ol></div>
+            
+          </div>
+        </section>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2016</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">蒋成智</span>
+</div>
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Pisces
+  </a>
+</div>
+
+        
+
+        
+      </div>
+    </footer>
+
+    <div class="back-to-top">
+      <i class="fa fa-arrow-up"></i>
+    </div>
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+  
+  <script type="text/javascript" src="/vendors/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/vendors/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.0.1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.0.1"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.0.1"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.0.1"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.0.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.0.1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.0.1"></script>
+
+
+
+  
+
+  
+    
+  
+
+  <script type="text/javascript">
+    var duoshuoQuery = {short_name:"xjnotxj"};
+    (function() {
+      var ds = document.createElement('script');
+      ds.type = 'text/javascript';ds.async = true;
+      ds.id = 'duoshuo-script';
+      ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+      ds.charset = 'UTF-8';
+      (document.getElementsByTagName('head')[0]
+      || document.getElementsByTagName('body')[0]).appendChild(ds);
+    })();
+  </script>
+
+  
+    
+    <script src="/vendors/ua-parser-js/dist/ua-parser.min.js?v=0.7.9"></script>
+    <script src="/js/src/hook-duoshuo.js"></script>
+  
+
+
+
+
+
+
+  
+  
+
+  
+
+  
+
+  
+  <script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.1.js"></script>
+  <script>AV.initialize("uheKVt60RMVmWaf4J8Nbm862-gzGzoHsz", "EHNMdwpPcWyREbLjlRUBGMgG");</script>
+  <script>
+    function showTime(Counter) {
+      var query = new AV.Query(Counter);
+      var entries = [];
+      var $visitors = $(".leancloud_visitors");
+
+      $visitors.each(function () {
+        entries.push( $(this).attr("id").trim() );
+      });
+
+      query.containedIn('url', entries);
+      query.find()
+        .done(function (results) {
+          var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
+
+          if (results.length === 0) {
+            $visitors.find(COUNT_CONTAINER_REF).text(0);
+            return;
+          }
+
+          for (var i = 0; i < results.length; i++) {
+            var item = results[i];
+            var url = item.get('url');
+            var time = item.get('time');
+            var element = document.getElementById(url);
+
+            $(element).find(COUNT_CONTAINER_REF).text(time);
+          }
+          for(var i = 0; i < entries.length; i++) {
+            var url = entries[i];
+            var element = document.getElementById(url);
+            var countSpan = $(element).find(COUNT_CONTAINER_REF);
+            if( countSpan.text() == '') {
+              countSpan.text(0);
+            }
+          }
+        })
+        .fail(function (object, error) {
+          console.log("Error: " + error.code + " " + error.message);
+        });
+    }
+
+    function addCount(Counter) {
+      var $visitors = $(".leancloud_visitors");
+      var url = $visitors.attr('id').trim();
+      var title = $visitors.attr('data-flag-title').trim();
+      var query = new AV.Query(Counter);
+
+      query.equalTo("url", url);
+      query.find({
+        success: function(results) {
+          if (results.length > 0) {
+            var counter = results[0];
+            counter.fetchWhenSave(true);
+            counter.increment("time");
+            counter.save(null, {
+              success: function(counter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(counter.get('time'));
+              },
+              error: function(counter, error) {
+                console.log('Failed to save Visitor num, with error message: ' + error.message);
+              }
+            });
+          } else {
+            var newcounter = new Counter();
+            /* Set ACL */
+            var acl = new AV.ACL();
+            acl.setPublicReadAccess(true);
+            acl.setPublicWriteAccess(true);
+            newcounter.setACL(acl);
+            /* End Set ACL */
+            newcounter.set("title", title);
+            newcounter.set("url", url);
+            newcounter.set("time", 1);
+            newcounter.save(null, {
+              success: function(newcounter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
+              },
+              error: function(newcounter, error) {
+                console.log('Failed to create');
+              }
+            });
+          }
+        },
+        error: function(error) {
+          console.log('Error:' + error.code + " " + error.message);
+        }
+      });
+    }
+
+    $(function() {
+      var Counter = AV.Object.extend("Counter");
+      if ($('.leancloud_visitors').length == 1) {
+        addCount(Counter);
+      } else if ($('.post-title-link').length > 1) {
+        showTime(Counter);
+      }
+    });
+  </script>
+
+
+
+  
+
+</body>
+</html>

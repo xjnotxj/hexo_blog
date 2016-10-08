@@ -1,0 +1,808 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/vendors/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/vendors/font-awesome/css/font-awesome.min.css?v=4.4.0" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.0.1" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="SQL," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.0.1" />
+
+
+
+
+
+
+<meta name="description" content="背景：本人上次做申领 campaign 的PHP后台时，因为项目上线后某些时段同时申领的人过多，导致一些专柜的存货为负数（&amp;lt; 0），还好并发量不是特别大，只存在于小部分专柜而且一般都是 -1 的状况，没有造成特别特别严重的后果，但还是要反思了自己的过错。
+这次又有新的申领 campaign，我翻看了上次的代码逻辑：
+正文：【先 select 后 update】12345678910begin">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Mysql 在高并发情况下，防止库存超卖而小于 0 的解决方案">
+<meta property="og:url" content="http://yoursite.com/2016/05/22/Mysql 在高并发情况下，防止库存超卖而小于 0 的解决方案/index.html">
+<meta property="og:site_name" content="小蒋不素小蒋">
+<meta property="og:description" content="背景：本人上次做申领 campaign 的PHP后台时，因为项目上线后某些时段同时申领的人过多，导致一些专柜的存货为负数（&amp;lt; 0），还好并发量不是特别大，只存在于小部分专柜而且一般都是 -1 的状况，没有造成特别特别严重的后果，但还是要反思了自己的过错。
+这次又有新的申领 campaign，我翻看了上次的代码逻辑：
+正文：【先 select 后 update】12345678910begin">
+<meta property="og:updated_time" content="2016-09-29T10:15:31.657Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Mysql 在高并发情况下，防止库存超卖而小于 0 的解决方案">
+<meta name="twitter:description" content="背景：本人上次做申领 campaign 的PHP后台时，因为项目上线后某些时段同时申领的人过多，导致一些专柜的存货为负数（&amp;lt; 0），还好并发量不是特别大，只存在于小部分专柜而且一般都是 -1 的状况，没有造成特别特别严重的后果，但还是要反思了自己的过错。
+这次又有新的申领 campaign，我翻看了上次的代码逻辑：
+正文：【先 select 后 update】12345678910begin">
+
+
+
+<script type="text/javascript" id="hexo.configuration">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    scheme: 'Pisces',
+    sidebar: {"position":"left","display":"post"},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: 0,
+      author: '博主'
+    }
+  };
+</script>
+
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2016/05/22/Mysql 在高并发情况下，防止库存超卖而小于 0 的解决方案/"/>
+
+  <title> Mysql 在高并发情况下，防止库存超卖而小于 0 的解决方案 | 小蒋不素小蒋 </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "//hm.baidu.com/hm.js?ca9c79cc2c25ea90183640659d5e0d17";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-meta ">
+  
+
+  <div class="custom-logo-site-title">
+    <a href="/"  class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <span class="site-title">小蒋不素小蒋</span>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+  <p class="site-subtitle">点滴生活与技术</p>
+</div>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-commonweal">
+          <a href="/404.html" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-heartbeat"></i> <br />
+            
+            公益404
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="st-search-show-outputs">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <form class="site-search-form">
+  <input type="text" id="st-search-input" class="st-search-input st-default-search-input" />
+</form>
+
+<script type="text/javascript">
+  (function(w,d,t,u,n,s,e){w['SwiftypeObject']=n;w[n]=w[n]||function(){
+    (w[n].q=w[n].q||[]).push(arguments);};s=d.createElement(t);
+    e=d.getElementsByTagName(t)[0];s.async=1;s.src=u;e.parentNode.insertBefore(s,e);
+  })(window,document,'script','//s.swiftypecdn.com/install/v2/st.js','_st');
+
+  _st('install', 'GzywR78iuG9Hcfx3PR-1','2.0.0');
+</script>
+
+
+
+    </div>
+  
+</nav>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                Mysql 在高并发情况下，防止库存超卖而小于 0 的解决方案
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2016-05-22T13:12:00+08:00" content="2016-05-22">
+              2016-05-22
+            </time>
+          </span>
+
+          
+
+          
+            
+              <span class="post-comments-count">
+                &nbsp; | &nbsp;
+                <a href="/2016/05/22/Mysql 在高并发情况下，防止库存超卖而小于 0 的解决方案/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/05/22/Mysql 在高并发情况下，防止库存超卖而小于 0 的解决方案/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+          
+          
+             <span id="/2016/05/22/Mysql 在高并发情况下，防止库存超卖而小于 0 的解决方案/" class="leancloud_visitors" data-flag-title="Mysql 在高并发情况下，防止库存超卖而小于 0 的解决方案">
+               &nbsp; | &nbsp;
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               <span class="post-meta-item-text">阅读次数 </span>
+               <span class="leancloud-visitors-count"></span>
+              </span>
+          
+
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h2 id="背景："><a href="#背景：" class="headerlink" title="背景："></a>背景：</h2><p>本人上次做申领 campaign 的PHP后台时，因为项目上线后某些时段同时申领的人过多，导致一些<strong>专柜的存货为负数（&lt; 0）</strong>，还好并发量不是特别大，只存在于小部分专柜而且一般都是 -1 的状况，没有造成特别特别严重的后果，但还是要反思了自己的过错。</p>
+<p>这次又有新的申领 campaign，我翻看了上次的代码逻辑：</p>
+<h2 id="正文："><a href="#正文：" class="headerlink" title="正文："></a>正文：</h2><h4 id="【先-select-后-update】"><a href="#【先-select-后-update】" class="headerlink" title="【先 select 后 update】"></a>【先 select 后 update】</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">beginTranse(开启事务)</div><div class="line">try&#123;</div><div class="line">    $result = $dbca-&gt;query(&apos;select amount from s_store where postID = 12345&apos;);</div><div class="line">    if(result-&gt;amount &gt; 0)&#123;</div><div class="line">        $dbca-&gt;query(&apos;update s_store set amount = amount - 1 where postID = 12345&apos;);</div><div class="line">    &#125;</div><div class="line">&#125;catch($e Exception)&#123;</div><div class="line">    rollBack(回滚)</div><div class="line">&#125;</div><div class="line">commit(提交事务)</div></pre></td></tr></table></figure>
+<p>以上代码就是我第一次的写法，看似问题不大，其实隐藏着巨大的漏洞。数据库的访问其实就是对磁盘文件的访问，数据库中的表其实就是保存在磁盘上的一个个文件，甚至一个文件包含了多张表。例如由于高并发，当前有三个用户 a、b、c 三个用户进入到了这个事务中，这个时候会产生一个<strong>共享锁</strong>，所以在 select 的时候，这三个用户查到的库存数量都是&gt;=0的。</p>
+<p>然后是 update，假如这三个用户同时到达 update 这里，这个时候 update 更新语句会把并发串行化，也就是给同时到达这里的是三个用户排个序，一个一个执行，并生成<strong>排他锁</strong>，在当前这个 update 语句 commit 之前，其他用户等待执行，commit 后，生成新的版本；这样执行完后，库存肯定为负数了。但是根据以上描述，我们修改一下代码就不会出现超买现象了，代码如下：</p>
+<h4 id="【先-update-后-select】"><a href="#【先-update-后-select】" class="headerlink" title="【先 update 后 select】"></a>【先 update 后 select】</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line">beginTranse(开启事务)</div><div class="line">try&#123;</div><div class="line">    $dbca-&gt;query(&apos;update s_store set amount = amount - 1 where postID = 12345&apos;);</div><div class="line">    $result = $dbca-&gt;query(&apos;select amount from s_store where postID = 12345&apos;);</div><div class="line">    if(result-&gt;amount &lt; 0)&#123;</div><div class="line">       throw new Exception(&apos;库存不足&apos;);</div><div class="line">    &#125;</div><div class="line">&#125;catch($e Exception)&#123;</div><div class="line">    rollBack(回滚)</div><div class="line">&#125;</div><div class="line">commit(提交事务)</div></pre></td></tr></table></figure>
+<p>　另外，更简洁的方法：</p>
+<h4 id="【update-amp-select-合并】"><a href="#【update-amp-select-合并】" class="headerlink" title="【update &amp; select 合并】"></a>【update &amp; select 合并】</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">beginTranse(开启事务)</div><div class="line">try&#123;</div><div class="line">    $dbca-&gt;query(&apos;update s_store set amount = amount - 1 where amount&gt;=1 and postID = 12345&apos;);</div><div class="line">&#125;catch($e Exception)&#123;</div><div class="line">    rollBack(回滚)</div><div class="line">&#125;</div><div class="line">commit(提交事务)</div></pre></td></tr></table></figure>
+<hr>
+<h4 id="补充"><a href="#补充" class="headerlink" title="补充"></a>补充</h4><p>1.这个肯定不能直接操作数据库的，会挂的。直接读库写库对数据库压力太大，要用<strong>缓存</strong></p>
+<p>把你要卖出的商品比如 10 个商品放到缓存中；然后在 memcache 里设置一个计数器来记录请求数，这个请求书你可以以你要秒杀卖出的商品数为基数，比如你想卖出 10 个商品，只允许 100 个请求进来。那当计数器达到 100 的时候，后面进来的就显示秒杀结束，这样可以减轻你的服务器的压力。然后根据这 100 个请求，先付款的先得后付款的提示商品以秒杀完。</p>
+<p>2.首先，多用户并发修改同一条记录时，肯定是后提交的用户将覆盖掉前者提交的结果了。这个直接可以使用<strong>加锁</strong>机制去解决，乐观锁或者悲观锁</p>
+<p><strong>悲观锁( Pessimistic Lock )</strong>, 顾名思义，就是很悲观，每次去拿数据的时候都认为别人会修改，所以每次在拿数据的时候都会上锁，这样别人想拿这个数据就会 block 直到它拿到锁。传统的关系型数据库里边就用到了很多这种锁机制，比如行锁，表锁等，读锁，写锁等，都是在做操作之前先上锁。</p>
+<p><strong>乐观锁( Optimistic Lock )</strong>, 顾名思义，就是很乐观，每次去拿数据的时候都认为别人不会修改，所以不会上锁，但是在更新的时候会判断一下在此期间别人有没有去更新这个数据，可以使用版本号等机制。乐观锁适用于多读的应用类型，这样可以提高吞吐量，像数据库如果提供类似于 write_condition 机制的其实都是提供的乐观锁。</p>
+<p>两种锁各有优缺点，不能单纯的定义哪个好于哪个。<strong>乐观锁比较适合数据修改比较少，读取比较频繁的场景</strong>，即使出现了少量的冲突，这样也省去了大量的锁的开销，故而提高了系统的吞吐量。但是如果经常发生冲突（写数据比较多的情况下），上层应用不不断的 retry，这样反而降低了性能，对于这种情况使用悲观锁就更合适。</p>
+<p>3.<strong>不建议在数据库层面加锁，建议通过服务端的内存锁（锁主键）</strong></p>
+<p>当某个用户要修改某个 id 的数据时，把要修改的 id 存入 memcache，若其他用户触发修改此 id 的数据时，读到 memcache 有这个 id 的值时，就阻止那个用户修改。</p>
+<hr>
+<h4 id="Reference："><a href="#Reference：" class="headerlink" title="Reference："></a>Reference：</h4><p><a href="http://blog.csdn.net/caomiao2006/article/details/38568825" target="_blank" rel="external">mysql处理高并发，防止库存超卖</a></p>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/SQL/" rel="tag">#SQL</a>
+          
+        </div>
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2016/05/02/如何调试 PHP 程序/" rel="next" title="如何调试 PHP 程序">
+                <i class="fa fa-chevron-left"></i> 如何调试 PHP 程序
+              </a>
+            
+          </div>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2016/05/22/常用 mysql 数据库引擎——MyISAM 和 InnoDB 区别/" rel="prev" title="常用 mysql 数据库引擎——MyISAM 和 InnoDB 区别">
+                常用 mysql 数据库引擎——MyISAM 和 InnoDB 区别 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div class="ds-thread" data-thread-key="2016/05/22/Mysql 在高并发情况下，防止库存超卖而小于 0 的解决方案/"
+           data-title="Mysql 在高并发情况下，防止库存超卖而小于 0 的解决方案" data-url="http://yoursite.com/2016/05/22/Mysql 在高并发情况下，防止库存超卖而小于 0 的解决方案/">
+      </div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel ">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="http://cn.gravatar.com/userimage/110826796/0f9e16e4ae0776f52a4fb70bf02a5832.jpg?size=200"
+               alt="蒋成智" />
+          <p class="site-author-name" itemprop="name">蒋成智</p>
+          <p class="site-description motion-element" itemprop="description"></p>
+        </div>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/archives">
+              <span class="site-state-item-count">23</span>
+              <span class="site-state-item-name">日志</span>
+            </a>
+          </div>
+
+          
+
+          
+            <div class="site-state-item site-state-tags">
+              <a href="/tags">
+                <span class="site-state-item-count">5</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+        
+        
+
+        
+        
+
+      </section>
+
+      
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+            
+              
+            
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#背景："><span class="nav-number">1.</span> <span class="nav-text">背景：</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#正文："><span class="nav-number">2.</span> <span class="nav-text">正文：</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#【先-select-后-update】"><span class="nav-number">2.0.1.</span> <span class="nav-text">【先 select 后 update】</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#【先-update-后-select】"><span class="nav-number">2.0.2.</span> <span class="nav-text">【先 update 后 select】</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#【update-amp-select-合并】"><span class="nav-number">2.0.3.</span> <span class="nav-text">【update & select 合并】</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#补充"><span class="nav-number">2.0.4.</span> <span class="nav-text">补充</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Reference："><span class="nav-number">2.0.5.</span> <span class="nav-text">Reference：</span></a></li></ol></li></ol></li></ol></div>
+            
+          </div>
+        </section>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2016</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">蒋成智</span>
+</div>
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Pisces
+  </a>
+</div>
+
+        
+
+        
+      </div>
+    </footer>
+
+    <div class="back-to-top">
+      <i class="fa fa-arrow-up"></i>
+    </div>
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+  
+  <script type="text/javascript" src="/vendors/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/vendors/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.0.1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.0.1"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.0.1"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.0.1"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.0.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.0.1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.0.1"></script>
+
+
+
+  
+
+  
+    
+  
+
+  <script type="text/javascript">
+    var duoshuoQuery = {short_name:"xjnotxj"};
+    (function() {
+      var ds = document.createElement('script');
+      ds.type = 'text/javascript';ds.async = true;
+      ds.id = 'duoshuo-script';
+      ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+      ds.charset = 'UTF-8';
+      (document.getElementsByTagName('head')[0]
+      || document.getElementsByTagName('body')[0]).appendChild(ds);
+    })();
+  </script>
+
+  
+    
+    <script src="/vendors/ua-parser-js/dist/ua-parser.min.js?v=0.7.9"></script>
+    <script src="/js/src/hook-duoshuo.js"></script>
+  
+
+
+
+
+
+
+  
+  
+
+  
+
+  
+
+  
+  <script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.1.js"></script>
+  <script>AV.initialize("uheKVt60RMVmWaf4J8Nbm862-gzGzoHsz", "EHNMdwpPcWyREbLjlRUBGMgG");</script>
+  <script>
+    function showTime(Counter) {
+      var query = new AV.Query(Counter);
+      var entries = [];
+      var $visitors = $(".leancloud_visitors");
+
+      $visitors.each(function () {
+        entries.push( $(this).attr("id").trim() );
+      });
+
+      query.containedIn('url', entries);
+      query.find()
+        .done(function (results) {
+          var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
+
+          if (results.length === 0) {
+            $visitors.find(COUNT_CONTAINER_REF).text(0);
+            return;
+          }
+
+          for (var i = 0; i < results.length; i++) {
+            var item = results[i];
+            var url = item.get('url');
+            var time = item.get('time');
+            var element = document.getElementById(url);
+
+            $(element).find(COUNT_CONTAINER_REF).text(time);
+          }
+          for(var i = 0; i < entries.length; i++) {
+            var url = entries[i];
+            var element = document.getElementById(url);
+            var countSpan = $(element).find(COUNT_CONTAINER_REF);
+            if( countSpan.text() == '') {
+              countSpan.text(0);
+            }
+          }
+        })
+        .fail(function (object, error) {
+          console.log("Error: " + error.code + " " + error.message);
+        });
+    }
+
+    function addCount(Counter) {
+      var $visitors = $(".leancloud_visitors");
+      var url = $visitors.attr('id').trim();
+      var title = $visitors.attr('data-flag-title').trim();
+      var query = new AV.Query(Counter);
+
+      query.equalTo("url", url);
+      query.find({
+        success: function(results) {
+          if (results.length > 0) {
+            var counter = results[0];
+            counter.fetchWhenSave(true);
+            counter.increment("time");
+            counter.save(null, {
+              success: function(counter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(counter.get('time'));
+              },
+              error: function(counter, error) {
+                console.log('Failed to save Visitor num, with error message: ' + error.message);
+              }
+            });
+          } else {
+            var newcounter = new Counter();
+            /* Set ACL */
+            var acl = new AV.ACL();
+            acl.setPublicReadAccess(true);
+            acl.setPublicWriteAccess(true);
+            newcounter.setACL(acl);
+            /* End Set ACL */
+            newcounter.set("title", title);
+            newcounter.set("url", url);
+            newcounter.set("time", 1);
+            newcounter.save(null, {
+              success: function(newcounter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
+              },
+              error: function(newcounter, error) {
+                console.log('Failed to create');
+              }
+            });
+          }
+        },
+        error: function(error) {
+          console.log('Error:' + error.code + " " + error.message);
+        }
+      });
+    }
+
+    $(function() {
+      var Counter = AV.Object.extend("Counter");
+      if ($('.leancloud_visitors').length == 1) {
+        addCount(Counter);
+      } else if ($('.post-title-link').length > 1) {
+        showTime(Counter);
+      }
+    });
+  </script>
+
+
+
+  
+
+</body>
+</html>

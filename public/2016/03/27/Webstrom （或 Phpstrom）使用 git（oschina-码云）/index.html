@@ -1,0 +1,832 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/vendors/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/vendors/font-awesome/css/font-awesome.min.css?v=4.4.0" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.0.1" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="前端," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.0.1" />
+
+
+
+
+
+
+<meta name="description" content="1.登录”码云”（题外话，这名字起得真好），创建一个新项目
+2.自动进入了新项目主页，复制该 git 仓库的 https 地址，第 4 步会用到
+3.打开 Webstrom，选择 checkout git
+4.把第 2 步复制好的地址填写上，点击”clone”即可克隆此项目到本地
+5.clone 好之后，我们在本地随便新建一个 index.html 文件
+
+这里选择”是”，即可每次 push 项目">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Webstrom （或 Phpstrom）使用 git（oschina-码云）">
+<meta property="og:url" content="http://yoursite.com/2016/03/27/Webstrom （或 Phpstrom）使用 git（oschina-码云）/index.html">
+<meta property="og:site_name" content="小蒋不素小蒋">
+<meta property="og:description" content="1.登录”码云”（题外话，这名字起得真好），创建一个新项目
+2.自动进入了新项目主页，复制该 git 仓库的 https 地址，第 4 步会用到
+3.打开 Webstrom，选择 checkout git
+4.把第 2 步复制好的地址填写上，点击”clone”即可克隆此项目到本地
+5.clone 好之后，我们在本地随便新建一个 index.html 文件
+
+这里选择”是”，即可每次 push 项目">
+<meta property="og:image" content="http://images2015.cnblogs.com/blog/896608/201605/896608-20160501165925597-1961428994.png">
+<meta property="og:image" content="http://images2015.cnblogs.com/blog/896608/201605/896608-20160501165926988-1511284224.png">
+<meta property="og:image" content="http://images2015.cnblogs.com/blog/896608/201605/896608-20160501165928457-1899396215.jpg">
+<meta property="og:image" content="http://images2015.cnblogs.com/blog/896608/201605/896608-20160501165926988-1511284224.png">
+<meta property="og:image" content="http://images2015.cnblogs.com/blog/896608/201605/896608-20160501165926988-1511284224.png">
+<meta property="og:image" content="http://images2015.cnblogs.com/blog/896608/201605/896608-20160501165932503-1695330927.png">
+<meta property="og:image" content="http://images2015.cnblogs.com/blog/896608/201605/896608-20160501165926988-1511284224.png">
+<meta property="og:image" content="http://images2015.cnblogs.com/blog/896608/201605/896608-20160501165926988-1511284224.png">
+<meta property="og:image" content="http://images2015.cnblogs.com/blog/896608/201605/896608-20160501165926988-1511284224.png">
+<meta property="og:image" content="http://images2015.cnblogs.com/blog/896608/201605/896608-20160501165926988-1511284224.png">
+<meta property="og:image" content="http://images2015.cnblogs.com/blog/896608/201605/896608-20160501165941816-742631572.jpg">
+<meta property="og:image" content="http://images2015.cnblogs.com/blog/896608/201605/896608-20160501165942832-1515778969.png">
+<meta property="og:image" content="http://images2015.cnblogs.com/blog/896608/201605/896608-20160501165943285-1364595041.png">
+<meta property="og:image" content="http://images2015.cnblogs.com/blog/896608/201605/896608-20160501165944285-460437205.png">
+<meta property="og:image" content="http://images2015.cnblogs.com/blog/896608/201605/896608-20160501165945238-2063233249.png">
+<meta property="og:image" content="http://images2015.cnblogs.com/blog/896608/201605/896608-20160501165946269-97328761.png">
+<meta property="og:updated_time" content="2016-09-29T08:57:24.480Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Webstrom （或 Phpstrom）使用 git（oschina-码云）">
+<meta name="twitter:description" content="1.登录”码云”（题外话，这名字起得真好），创建一个新项目
+2.自动进入了新项目主页，复制该 git 仓库的 https 地址，第 4 步会用到
+3.打开 Webstrom，选择 checkout git
+4.把第 2 步复制好的地址填写上，点击”clone”即可克隆此项目到本地
+5.clone 好之后，我们在本地随便新建一个 index.html 文件
+
+这里选择”是”，即可每次 push 项目">
+<meta name="twitter:image" content="http://images2015.cnblogs.com/blog/896608/201605/896608-20160501165925597-1961428994.png">
+
+
+
+<script type="text/javascript" id="hexo.configuration">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    scheme: 'Pisces',
+    sidebar: {"position":"left","display":"post"},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: 0,
+      author: '博主'
+    }
+  };
+</script>
+
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2016/03/27/Webstrom （或 Phpstrom）使用 git（oschina-码云）/"/>
+
+  <title> Webstrom （或 Phpstrom）使用 git（oschina-码云） | 小蒋不素小蒋 </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "//hm.baidu.com/hm.js?ca9c79cc2c25ea90183640659d5e0d17";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-meta ">
+  
+
+  <div class="custom-logo-site-title">
+    <a href="/"  class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <span class="site-title">小蒋不素小蒋</span>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+  <p class="site-subtitle">点滴生活与技术</p>
+</div>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-commonweal">
+          <a href="/404.html" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-heartbeat"></i> <br />
+            
+            公益404
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="st-search-show-outputs">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <form class="site-search-form">
+  <input type="text" id="st-search-input" class="st-search-input st-default-search-input" />
+</form>
+
+<script type="text/javascript">
+  (function(w,d,t,u,n,s,e){w['SwiftypeObject']=n;w[n]=w[n]||function(){
+    (w[n].q=w[n].q||[]).push(arguments);};s=d.createElement(t);
+    e=d.getElementsByTagName(t)[0];s.async=1;s.src=u;e.parentNode.insertBefore(s,e);
+  })(window,document,'script','//s.swiftypecdn.com/install/v2/st.js','_st');
+
+  _st('install', 'GzywR78iuG9Hcfx3PR-1','2.0.0');
+</script>
+
+
+
+    </div>
+  
+</nav>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                Webstrom （或 Phpstrom）使用 git（oschina-码云）
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2016-03-27T14:26:00+08:00" content="2016-03-27">
+              2016-03-27
+            </time>
+          </span>
+
+          
+
+          
+            
+              <span class="post-comments-count">
+                &nbsp; | &nbsp;
+                <a href="/2016/03/27/Webstrom （或 Phpstrom）使用 git（oschina-码云）/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/03/27/Webstrom （或 Phpstrom）使用 git（oschina-码云）/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+          
+          
+             <span id="/2016/03/27/Webstrom （或 Phpstrom）使用 git（oschina-码云）/" class="leancloud_visitors" data-flag-title="Webstrom （或 Phpstrom）使用 git（oschina-码云）">
+               &nbsp; | &nbsp;
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               <span class="post-meta-item-text">阅读次数 </span>
+               <span class="leancloud-visitors-count"></span>
+              </span>
+          
+
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h4 id="1-登录”码云”（题外话，这名字起得真好），创建一个新项目"><a href="#1-登录”码云”（题外话，这名字起得真好），创建一个新项目" class="headerlink" title="1.登录”码云”（题外话，这名字起得真好），创建一个新项目"></a>1.登录”码云”（题外话，这名字起得真好），创建一个新项目</h4><p><img src="http://images2015.cnblogs.com/blog/896608/201605/896608-20160501165925597-1961428994.png" alt=""></p>
+<h4 id="2-自动进入了新项目主页，复制该-git-仓库的-https-地址，第-4-步会用到"><a href="#2-自动进入了新项目主页，复制该-git-仓库的-https-地址，第-4-步会用到" class="headerlink" title="2.自动进入了新项目主页，复制该 git 仓库的 https 地址，第 4 步会用到"></a>2.自动进入了新项目主页，复制该 git 仓库的 https 地址，第 4 步会用到</h4><p><img src="http://images2015.cnblogs.com/blog/896608/201605/896608-20160501165926988-1511284224.png" alt=""></p>
+<h4 id="3-打开-Webstrom，选择-checkout-git"><a href="#3-打开-Webstrom，选择-checkout-git" class="headerlink" title="3.打开 Webstrom，选择 checkout git"></a>3.打开 Webstrom，选择 checkout git</h4><p><img src="http://images2015.cnblogs.com/blog/896608/201605/896608-20160501165928457-1899396215.jpg" alt=""></p>
+<h4 id="4-把第-2-步复制好的地址填写上，点击”clone”即可克隆此项目到本地"><a href="#4-把第-2-步复制好的地址填写上，点击”clone”即可克隆此项目到本地" class="headerlink" title="4.把第 2 步复制好的地址填写上，点击”clone”即可克隆此项目到本地"></a>4.把第 2 步复制好的地址填写上，点击”clone”即可克隆此项目到本地</h4><p><img src="http://images2015.cnblogs.com/blog/896608/201605/896608-20160501165926988-1511284224.png" alt=""></p>
+<h4 id="5-clone-好之后，我们在本地随便新建一个-index-html-文件"><a href="#5-clone-好之后，我们在本地随便新建一个-index-html-文件" class="headerlink" title="5.clone 好之后，我们在本地随便新建一个 index.html 文件"></a>5.clone 好之后，我们在本地随便新建一个 index.html 文件</h4><p><img src="http://images2015.cnblogs.com/blog/896608/201605/896608-20160501165926988-1511284224.png" alt=""></p>
+<blockquote>
+<p>这里选择”是”，即可每次 push 项目的时候不用 add 就能直接 commit 所有增删改的文件（关于 add 和 commit 的 gi t基本概念，请移步<a href="http://www.liaoxuefeng.com/wiki/0013739516305929606dd18361248578c67b8067c8c017b000/0013743256916071d599b3aed534aaab22a0db6c4e07fd0000" target="_blank" rel="external">Git 教程 - 廖雪峰的官方网站 - 创建版本库</a>。<br><img src="http://images2015.cnblogs.com/blog/896608/201605/896608-20160501165932503-1695330927.png" alt="">  </p>
+</blockquote>
+<h4 id="6-如果上面点了”是”，那这一步省略，因为系统会自动帮你把所有增删改的文件都-add-了"><a href="#6-如果上面点了”是”，那这一步省略，因为系统会自动帮你把所有增删改的文件都-add-了" class="headerlink" title="6.如果上面点了”是”，那这一步省略，因为系统会自动帮你把所有增删改的文件都 add 了"></a>6.如果上面点了”是”，那这一步省略，因为系统会自动帮你把所有增删改的文件都 add 了</h4><p><img src="http://images2015.cnblogs.com/blog/896608/201605/896608-20160501165926988-1511284224.png" alt=""></p>
+<h4 id="7-项目修改完毕，点击-commit"><a href="#7-项目修改完毕，点击-commit" class="headerlink" title="7.项目修改完毕，点击 commit"></a>7.项目修改完毕，点击 commit</h4><p><img src="http://images2015.cnblogs.com/blog/896608/201605/896608-20160501165926988-1511284224.png" alt=""></p>
+<h4 id="8-提交之前，养成写注释的好习惯，这样才知道这个项目是什么人修改的，修改了什么"><a href="#8-提交之前，养成写注释的好习惯，这样才知道这个项目是什么人修改的，修改了什么" class="headerlink" title="8.提交之前，养成写注释的好习惯，这样才知道这个项目是什么人修改的，修改了什么"></a>8.提交之前，养成写注释的好习惯，这样才知道这个项目是什么人修改的，修改了什么</h4><p><img src="http://images2015.cnblogs.com/blog/896608/201605/896608-20160501165926988-1511284224.png" alt=""></p>
+<h4 id="9-commit-之后，点击-push-，即可把本地项目上传更新”码云”的远程项目仓库"><a href="#9-commit-之后，点击-push-，即可把本地项目上传更新”码云”的远程项目仓库" class="headerlink" title="9.commit 之后，点击 push ，即可把本地项目上传更新”码云”的远程项目仓库"></a>9.commit 之后，点击 push ，即可把本地项目上传更新”码云”的远程项目仓库</h4><p><img src="http://images2015.cnblogs.com/blog/896608/201605/896608-20160501165926988-1511284224.png" alt=""><br><img src="http://images2015.cnblogs.com/blog/896608/201605/896608-20160501165941816-742631572.jpg" alt=""><br><img src="http://images2015.cnblogs.com/blog/896608/201605/896608-20160501165942832-1515778969.png" alt=""><br><img src="http://images2015.cnblogs.com/blog/896608/201605/896608-20160501165943285-1364595041.png" alt=""></p>
+<h4 id="10-刷新后即可看到新增的-index-html"><a href="#10-刷新后即可看到新增的-index-html" class="headerlink" title="10.刷新后即可看到新增的 index.html"></a>10.刷新后即可看到新增的 index.html</h4><p><img src="http://images2015.cnblogs.com/blog/896608/201605/896608-20160501165944285-460437205.png" alt=""></p>
+<h4 id="11-另外，注意的是，每天开始写项目前，要养成先-pull-的好习惯，保持本地项目与远程-git-项目仓库保持一致的最新状态"><a href="#11-另外，注意的是，每天开始写项目前，要养成先-pull-的好习惯，保持本地项目与远程-git-项目仓库保持一致的最新状态" class="headerlink" title="11.另外，注意的是，每天开始写项目前，要养成先 pull 的好习惯，保持本地项目与远程 git 项目仓库保持一致的最新状态"></a>11.另外，注意的是，每天开始写项目前，要养成先 pull 的好习惯，保持本地项目与远程 git 项目仓库保持一致的最新状态</h4><p><img src="http://images2015.cnblogs.com/blog/896608/201605/896608-20160501165945238-2063233249.png" alt=""><br><img src="http://images2015.cnblogs.com/blog/896608/201605/896608-20160501165946269-97328761.png" alt=""></p>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/前端/" rel="tag">#前端</a>
+          
+        </div>
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2016/03/25/EXCEL 数字+E+数字 自动识别为指数形式的解决办法/" rel="next" title="EXCEL 数字+E+数字 自动识别为指数形式的解决办法">
+                <i class="fa fa-chevron-left"></i> EXCEL 数字+E+数字 自动识别为指数形式的解决办法
+              </a>
+            
+          </div>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2016/05/01/AJAX 实现跨域的三种方法/" rel="prev" title="AJAX 实现跨域的三种方法">
+                AJAX 实现跨域的三种方法 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div class="ds-thread" data-thread-key="2016/03/27/Webstrom （或 Phpstrom）使用 git（oschina-码云）/"
+           data-title="Webstrom （或 Phpstrom）使用 git（oschina-码云）" data-url="http://yoursite.com/2016/03/27/Webstrom （或 Phpstrom）使用 git（oschina-码云）/">
+      </div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel ">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="http://cn.gravatar.com/userimage/110826796/0f9e16e4ae0776f52a4fb70bf02a5832.jpg?size=200"
+               alt="蒋成智" />
+          <p class="site-author-name" itemprop="name">蒋成智</p>
+          <p class="site-description motion-element" itemprop="description"></p>
+        </div>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/archives">
+              <span class="site-state-item-count">23</span>
+              <span class="site-state-item-name">日志</span>
+            </a>
+          </div>
+
+          
+
+          
+            <div class="site-state-item site-state-tags">
+              <a href="/tags">
+                <span class="site-state-item-count">5</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+        
+        
+
+        
+        
+
+      </section>
+
+      
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+            
+              
+            
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-登录”码云”（题外话，这名字起得真好），创建一个新项目"><span class="nav-number">1.</span> <span class="nav-text">1.登录”码云”（题外话，这名字起得真好），创建一个新项目</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-自动进入了新项目主页，复制该-git-仓库的-https-地址，第-4-步会用到"><span class="nav-number">2.</span> <span class="nav-text">2.自动进入了新项目主页，复制该 git 仓库的 https 地址，第 4 步会用到</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-打开-Webstrom，选择-checkout-git"><span class="nav-number">3.</span> <span class="nav-text">3.打开 Webstrom，选择 checkout git</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#4-把第-2-步复制好的地址填写上，点击”clone”即可克隆此项目到本地"><span class="nav-number">4.</span> <span class="nav-text">4.把第 2 步复制好的地址填写上，点击”clone”即可克隆此项目到本地</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#5-clone-好之后，我们在本地随便新建一个-index-html-文件"><span class="nav-number">5.</span> <span class="nav-text">5.clone 好之后，我们在本地随便新建一个 index.html 文件</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#6-如果上面点了”是”，那这一步省略，因为系统会自动帮你把所有增删改的文件都-add-了"><span class="nav-number">6.</span> <span class="nav-text">6.如果上面点了”是”，那这一步省略，因为系统会自动帮你把所有增删改的文件都 add 了</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#7-项目修改完毕，点击-commit"><span class="nav-number">7.</span> <span class="nav-text">7.项目修改完毕，点击 commit</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#8-提交之前，养成写注释的好习惯，这样才知道这个项目是什么人修改的，修改了什么"><span class="nav-number">8.</span> <span class="nav-text">8.提交之前，养成写注释的好习惯，这样才知道这个项目是什么人修改的，修改了什么</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#9-commit-之后，点击-push-，即可把本地项目上传更新”码云”的远程项目仓库"><span class="nav-number">9.</span> <span class="nav-text">9.commit 之后，点击 push ，即可把本地项目上传更新”码云”的远程项目仓库</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#10-刷新后即可看到新增的-index-html"><span class="nav-number">10.</span> <span class="nav-text">10.刷新后即可看到新增的 index.html</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#11-另外，注意的是，每天开始写项目前，要养成先-pull-的好习惯，保持本地项目与远程-git-项目仓库保持一致的最新状态"><span class="nav-number">11.</span> <span class="nav-text">11.另外，注意的是，每天开始写项目前，要养成先 pull 的好习惯，保持本地项目与远程 git 项目仓库保持一致的最新状态</span></a></li></ol></div>
+            
+          </div>
+        </section>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2016</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">蒋成智</span>
+</div>
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Pisces
+  </a>
+</div>
+
+        
+
+        
+      </div>
+    </footer>
+
+    <div class="back-to-top">
+      <i class="fa fa-arrow-up"></i>
+    </div>
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+  
+  <script type="text/javascript" src="/vendors/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/vendors/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.0.1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.0.1"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.0.1"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.0.1"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.0.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.0.1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.0.1"></script>
+
+
+
+  
+
+  
+    
+  
+
+  <script type="text/javascript">
+    var duoshuoQuery = {short_name:"xjnotxj"};
+    (function() {
+      var ds = document.createElement('script');
+      ds.type = 'text/javascript';ds.async = true;
+      ds.id = 'duoshuo-script';
+      ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+      ds.charset = 'UTF-8';
+      (document.getElementsByTagName('head')[0]
+      || document.getElementsByTagName('body')[0]).appendChild(ds);
+    })();
+  </script>
+
+  
+    
+    <script src="/vendors/ua-parser-js/dist/ua-parser.min.js?v=0.7.9"></script>
+    <script src="/js/src/hook-duoshuo.js"></script>
+  
+
+
+
+
+
+
+  
+  
+
+  
+
+  
+
+  
+  <script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.1.js"></script>
+  <script>AV.initialize("uheKVt60RMVmWaf4J8Nbm862-gzGzoHsz", "EHNMdwpPcWyREbLjlRUBGMgG");</script>
+  <script>
+    function showTime(Counter) {
+      var query = new AV.Query(Counter);
+      var entries = [];
+      var $visitors = $(".leancloud_visitors");
+
+      $visitors.each(function () {
+        entries.push( $(this).attr("id").trim() );
+      });
+
+      query.containedIn('url', entries);
+      query.find()
+        .done(function (results) {
+          var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
+
+          if (results.length === 0) {
+            $visitors.find(COUNT_CONTAINER_REF).text(0);
+            return;
+          }
+
+          for (var i = 0; i < results.length; i++) {
+            var item = results[i];
+            var url = item.get('url');
+            var time = item.get('time');
+            var element = document.getElementById(url);
+
+            $(element).find(COUNT_CONTAINER_REF).text(time);
+          }
+          for(var i = 0; i < entries.length; i++) {
+            var url = entries[i];
+            var element = document.getElementById(url);
+            var countSpan = $(element).find(COUNT_CONTAINER_REF);
+            if( countSpan.text() == '') {
+              countSpan.text(0);
+            }
+          }
+        })
+        .fail(function (object, error) {
+          console.log("Error: " + error.code + " " + error.message);
+        });
+    }
+
+    function addCount(Counter) {
+      var $visitors = $(".leancloud_visitors");
+      var url = $visitors.attr('id').trim();
+      var title = $visitors.attr('data-flag-title').trim();
+      var query = new AV.Query(Counter);
+
+      query.equalTo("url", url);
+      query.find({
+        success: function(results) {
+          if (results.length > 0) {
+            var counter = results[0];
+            counter.fetchWhenSave(true);
+            counter.increment("time");
+            counter.save(null, {
+              success: function(counter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(counter.get('time'));
+              },
+              error: function(counter, error) {
+                console.log('Failed to save Visitor num, with error message: ' + error.message);
+              }
+            });
+          } else {
+            var newcounter = new Counter();
+            /* Set ACL */
+            var acl = new AV.ACL();
+            acl.setPublicReadAccess(true);
+            acl.setPublicWriteAccess(true);
+            newcounter.setACL(acl);
+            /* End Set ACL */
+            newcounter.set("title", title);
+            newcounter.set("url", url);
+            newcounter.set("time", 1);
+            newcounter.save(null, {
+              success: function(newcounter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
+              },
+              error: function(newcounter, error) {
+                console.log('Failed to create');
+              }
+            });
+          }
+        },
+        error: function(error) {
+          console.log('Error:' + error.code + " " + error.message);
+        }
+      });
+    }
+
+    $(function() {
+      var Counter = AV.Object.extend("Counter");
+      if ($('.leancloud_visitors').length == 1) {
+        addCount(Counter);
+      } else if ($('.post-title-link').length > 1) {
+        showTime(Counter);
+      }
+    });
+  </script>
+
+
+
+  
+
+</body>
+</html>

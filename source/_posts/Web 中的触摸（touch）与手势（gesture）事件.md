@@ -2,6 +2,7 @@
 title: Web 中的触摸（touch）与手势（gesture）事件
 date: 2016-06-08 17:46:00
 tags: 前端
+categories: 技术
 ---
   
 ## 一.触摸事件（TouchEvent）

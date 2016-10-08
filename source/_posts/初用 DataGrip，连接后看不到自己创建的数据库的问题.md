@@ -2,6 +2,7 @@
 title: 初用 DataGrip，连接后看不到自己创建的数据库的问题
 date: 2016-05-01 15:57:00
 tags: SQL
+categories: 技术
 ---
   
 ## 1.首先，成功连接数据库服务

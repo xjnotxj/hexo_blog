@@ -2,6 +2,7 @@
 title: Mysql 在高并发情况下，防止库存超卖而小于 0 的解决方案
 date: 2016-05-22 13:12:00
 tags: SQL
+categories: 技术
 ---
   
 ## 背景：

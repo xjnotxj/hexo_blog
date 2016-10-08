@@ -2,6 +2,7 @@
 title: 让 jQuery UI draggable 适配移动端
 date: 2016-06-01 23:46:00
 tags: 前端
+categories: 技术
 ---
   
 ## 背景：

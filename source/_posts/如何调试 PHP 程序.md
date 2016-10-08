@@ -2,6 +2,7 @@
 title: 如何调试 PHP 程序
 date: 2016-05-02 15:54:00
 tags: php-CodeIgniter
+categories: 技术
 ---
   
 ## 一.PHP 自带的调试功能

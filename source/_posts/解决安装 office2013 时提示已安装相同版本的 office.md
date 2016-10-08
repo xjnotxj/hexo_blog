@@ -2,6 +2,7 @@
 title: 解决安装 office2013 时提示已安装相同版本的 office
 date: 2016-03-24 03:00:00
 tags: office
+categories: 技术
 ---
   
 ## 问题:

@@ -2,6 +2,7 @@
 title: 常用 mysql 数据库引擎——MyISAM 和 InnoDB 区别
 date: 2016-05-22 14:20:00
 tags: SQL
+categories: 技术
 ---
   
 ## 背景：

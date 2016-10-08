@@ -2,6 +2,7 @@
 title: Webstrom （或 Phpstrom）使用 git（oschina-码云）
 date: 2016-03-27 14:26:00
 tags: 前端
+categories: 技术
 ---
   
 #### 1.登录"码云"（题外话，这名字起得真好），创建一个新项目

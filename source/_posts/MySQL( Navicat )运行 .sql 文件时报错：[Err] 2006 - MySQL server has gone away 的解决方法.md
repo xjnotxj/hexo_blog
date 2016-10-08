@@ -2,6 +2,7 @@
 title: MySQL( Navicat )运行 .sql 文件时报错：[Err] 2006 - MySQL server has gone away 的解决方法
 date: 2016-06-01 22:12:00
 tags: SQL
+categories: 技术
 ---
   
 ## 背景：

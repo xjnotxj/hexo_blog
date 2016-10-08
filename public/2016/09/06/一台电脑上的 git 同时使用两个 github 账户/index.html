@@ -1,0 +1,903 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/vendors/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/vendors/font-awesome/css/font-awesome.min.css?v=4.4.0" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.0.1" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="git," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.0.1" />
+
+
+
+
+
+
+<meta name="description" content="需求：公司有 github 账号，自己有 github 账号，想在 git 上同时使用，两者互不干扰。
+思路：管理两个 SHH key。
+解决方案：一、生成两个 SSH key为了举例方便，这里使用“one”和“two”两个账户。下同。
+123$ ssh-keygen -t rsa -C &amp;quot;one@gmail.com&amp;quot;$ ssh-keygen -t rsa -C &amp;quot;t">
+<meta property="og:type" content="article">
+<meta property="og:title" content="一台电脑上的 git 同时使用两个 github 账户">
+<meta property="og:url" content="http://yoursite.com/2016/09/06/一台电脑上的 git 同时使用两个 github 账户/index.html">
+<meta property="og:site_name" content="小蒋不素小蒋">
+<meta property="og:description" content="需求：公司有 github 账号，自己有 github 账号，想在 git 上同时使用，两者互不干扰。
+思路：管理两个 SHH key。
+解决方案：一、生成两个 SSH key为了举例方便，这里使用“one”和“two”两个账户。下同。
+123$ ssh-keygen -t rsa -C &amp;quot;one@gmail.com&amp;quot;$ ssh-keygen -t rsa -C &amp;quot;t">
+<meta property="og:image" content="http://images2015.cnblogs.com/blog/896608/201609/896608-20160906141211848-1361958749.png">
+<meta property="og:image" content="http://images2015.cnblogs.com/blog/896608/201609/896608-20160906141212879-1996635009.png">
+<meta property="og:image" content="http://images2015.cnblogs.com/blog/896608/201609/896608-20160906141213363-1283878125.png">
+<meta property="og:image" content="http://images2015.cnblogs.com/blog/896608/201609/896608-20160906141214098-881485710.png">
+<meta property="og:image" content="http://images2015.cnblogs.com/blog/896608/201609/896608-20160906141214426-402089066.png">
+<meta property="og:updated_time" content="2016-10-08T16:00:54.414Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="一台电脑上的 git 同时使用两个 github 账户">
+<meta name="twitter:description" content="需求：公司有 github 账号，自己有 github 账号，想在 git 上同时使用，两者互不干扰。
+思路：管理两个 SHH key。
+解决方案：一、生成两个 SSH key为了举例方便，这里使用“one”和“two”两个账户。下同。
+123$ ssh-keygen -t rsa -C &amp;quot;one@gmail.com&amp;quot;$ ssh-keygen -t rsa -C &amp;quot;t">
+<meta name="twitter:image" content="http://images2015.cnblogs.com/blog/896608/201609/896608-20160906141211848-1361958749.png">
+
+
+
+<script type="text/javascript" id="hexo.configuration">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    scheme: 'Pisces',
+    sidebar: {"position":"left","display":"post"},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: 0,
+      author: '博主'
+    }
+  };
+</script>
+
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2016/09/06/一台电脑上的 git 同时使用两个 github 账户/"/>
+
+  <title> 一台电脑上的 git 同时使用两个 github 账户 | 小蒋不素小蒋 </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "//hm.baidu.com/hm.js?ca9c79cc2c25ea90183640659d5e0d17";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-meta ">
+  
+
+  <div class="custom-logo-site-title">
+    <a href="/"  class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <span class="site-title">小蒋不素小蒋</span>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+  <p class="site-subtitle">点滴生活与技术</p>
+</div>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="st-search-show-outputs">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <form class="site-search-form">
+  <input type="text" id="st-search-input" class="st-search-input st-default-search-input" />
+</form>
+
+<script type="text/javascript">
+  (function(w,d,t,u,n,s,e){w['SwiftypeObject']=n;w[n]=w[n]||function(){
+    (w[n].q=w[n].q||[]).push(arguments);};s=d.createElement(t);
+    e=d.getElementsByTagName(t)[0];s.async=1;s.src=u;e.parentNode.insertBefore(s,e);
+  })(window,document,'script','//s.swiftypecdn.com/install/v2/st.js','_st');
+
+  _st('install', 'GzywR78iuG9Hcfx3PR-1','2.0.0');
+</script>
+
+
+
+    </div>
+  
+</nav>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                一台电脑上的 git 同时使用两个 github 账户
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2016-09-06T14:12:00+08:00" content="2016-09-06">
+              2016-09-06
+            </time>
+          </span>
+
+          
+            <span class="post-category" >
+              &nbsp; | &nbsp;
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/技术/" itemprop="url" rel="index">
+                    <span itemprop="name">技术</span>
+                  </a>
+                </span>
+
+                
+                
+
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                &nbsp; | &nbsp;
+                <a href="/2016/09/06/一台电脑上的 git 同时使用两个 github 账户/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/09/06/一台电脑上的 git 同时使用两个 github 账户/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+          
+          
+             <span id="/2016/09/06/一台电脑上的 git 同时使用两个 github 账户/" class="leancloud_visitors" data-flag-title="一台电脑上的 git 同时使用两个 github 账户">
+               &nbsp; | &nbsp;
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               <span class="post-meta-item-text">阅读次数 </span>
+               <span class="leancloud-visitors-count"></span>
+              </span>
+          
+
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h2 id="需求："><a href="#需求：" class="headerlink" title="需求："></a>需求：</h2><p>公司有 github 账号，自己有 github 账号，想在 git 上同时使用，两者互不干扰。</p>
+<h2 id="思路："><a href="#思路：" class="headerlink" title="思路："></a>思路：</h2><p>管理两个 SHH key。</p>
+<h2 id="解决方案："><a href="#解决方案：" class="headerlink" title="解决方案："></a>解决方案：</h2><h3 id="一、生成两个-SSH-key"><a href="#一、生成两个-SSH-key" class="headerlink" title="一、生成两个 SSH key"></a>一、生成两个 SSH key</h3><p>为了举例方便，这里使用“<strong>one</strong>”和“<strong>two</strong>”两个账户。下同。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">$ ssh-keygen -t rsa -C &quot;one@gmail.com&quot;</div><div class="line"></div><div class="line">$ ssh-keygen -t rsa -C &quot;two@gmail.com&quot;</div></pre></td></tr></table></figure>
+<p>不要一路回车，分别在第一个对话的时候输入重命名（ <strong>id_rsa_one</strong> 和 <strong>id_rsa_two</strong> ），这样会生成<img src="http://images2015.cnblogs.com/blog/896608/201609/896608-20160906141211848-1361958749.png" alt="">两份包含私钥和公钥的 4 个文件。</p>
+<blockquote>
+<ol>
+<li>sh-keygen 是 linux命令，可以让两个机器之间使用 ssh 而不需要用户名和密码</li>
+<li>一定要在 ~/.ssh 路径下运行命令行，不然生成的文件不会出现在当前目录</li>
+</ol>
+</blockquote>
+<h3 id="二、添加私钥"><a href="#二、添加私钥" class="headerlink" title="二、添加私钥"></a>二、添加私钥</h3><h4 id="（1）打开-ssh-agent"><a href="#（1）打开-ssh-agent" class="headerlink" title="（1）打开 ssh-agent"></a>（1）打开 ssh-agent</h4><p>1.如果你是 github 官方的 bash：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ ssh-agent -s</div></pre></td></tr></table></figure>
+<p>2.如果你是其它，比如msysgit：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ eval $(ssh-agent -s)</div></pre></td></tr></table></figure></p>
+<h4 id="（2）添加私钥"><a href="#（2）添加私钥" class="headerlink" title="（2）添加私钥"></a>（2）添加私钥</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">$ ssh-add ~/.ssh/id_rsa_one</div><div class="line"></div><div class="line">$ ssh-add ~/.ssh/id_rsa_two</div></pre></td></tr></table></figure>
+<h3 id="三、创建-config-文件"><a href="#三、创建-config-文件" class="headerlink" title="三、创建 config 文件"></a>三、创建 config 文件</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ touch config</div></pre></td></tr></table></figure>
+<p>此时会出现空的 config 文件，然后添加如下内容：</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div></pre></td><td class="code"><pre><div class="line"># one(one@gmail.com)</div><div class="line"></div><div class="line">    <span class="tag">&lt;<span class="name">!-</span> <span class="attr">one.github.com</span> <span class="attr">--</span>&gt;</span></div><div class="line">    Host one.github.com</div><div class="line"></div><div class="line">　　HostName github.com</div><div class="line"></div><div class="line">　　PreferredAuthentications publickey</div><div class="line"></div><div class="line">　　IdentityFile ~/.ssh/id_rsa_one</div><div class="line"></div><div class="line">　　User one</div><div class="line"></div><div class="line"></div><div class="line"># two(two@ gmail.com)</div><div class="line"></div><div class="line">    <span class="tag">&lt;<span class="name">!-</span> <span class="attr">two.github.com</span> <span class="attr">--</span>&gt;</span></div><div class="line">    Host two.github.com</div><div class="line"></div><div class="line">　　HostName github.com</div><div class="line"></div><div class="line">　　PreferredAuthentications publickey</div><div class="line"></div><div class="line">　　IdentityFile ~/.ssh/id_rsa_two</div><div class="line"></div><div class="line">　　User two</div></pre></td></tr></table></figure>
+<h3 id="四、部署-SSH-key"><a href="#四、部署-SSH-key" class="headerlink" title="四、部署 SSH key"></a>四、部署 SSH key</h3><p>分别登陆两个 github 账号，进入 <strong>Personal settings –&gt; SSH and GPG keys</strong> ：</p>
+<p><img src="http://images2015.cnblogs.com/blog/896608/201609/896608-20160906141212879-1996635009.png" alt=""><br>点击 “new SSH key”， 把下面两个公钥的内容分别添加到相应的 github 账号中。<br><img src="http://images2015.cnblogs.com/blog/896608/201609/896608-20160906141213363-1283878125.png" alt=""></p>
+<h3 id="五、远程测试【可跳过】"><a href="#五、远程测试【可跳过】" class="headerlink" title="五、远程测试【可跳过】"></a>五、远程测试【可跳过】</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">$ ssh –T one.github.com</div><div class="line"></div><div class="line">$ ssh –T two.github.com</div></pre></td></tr></table></figure>
+<h3 id="六、使用"><a href="#六、使用" class="headerlink" title="六、使用"></a>六、使用</h3><h4 id="（1）clone-到本地"><a href="#（1）clone-到本地" class="headerlink" title="（1）clone 到本地"></a>（1）clone 到本地</h4><p>1.原来的写法：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ git clone git@github.com: one 的用户名/learngit.git</div></pre></td></tr></table></figure></p>
+<p>2.现在的写法：<br><figure class="highlight xml"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="tag">&lt;<span class="name">!-</span> <span class="attr">one.github.com</span> <span class="attr">--</span>&gt;</span></div><div class="line">$ git clone git@one.github.com: one 的用户名/learngit.git</div><div class="line"></div><div class="line"><span class="tag">&lt;<span class="name">!-</span> <span class="attr">two.github.com</span> <span class="attr">--</span>&gt;</span></div><div class="line">$ git clone git@two.github.com: two 的用户名/learngit.git</div></pre></td></tr></table></figure></p>
+<h4 id="（2）记得给这个仓库设置局部的用户名和邮箱"><a href="#（2）记得给这个仓库设置局部的用户名和邮箱" class="headerlink" title="（2）记得给这个仓库设置局部的用户名和邮箱"></a>（2）记得给这个仓库设置局部的用户名和邮箱</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">$ git config user.name &quot;one_name&quot; ; git config user.email &quot;one_email&quot;</div><div class="line"></div><div class="line">$ git config user.name &quot;two_name&quot; ; git config user.email &quot;two_email&quot;</div></pre></td></tr></table></figure>
+<h4 id="（3）上述都成功后，会发现钥匙会由灰变绿"><a href="#（3）上述都成功后，会发现钥匙会由灰变绿" class="headerlink" title="（3）上述都成功后，会发现钥匙会由灰变绿"></a>（3）上述都成功后，会发现钥匙会由灰变绿</h4><p><img src="http://images2015.cnblogs.com/blog/896608/201609/896608-20160906141214098-881485710.png" alt=""><br><img src="http://images2015.cnblogs.com/blog/896608/201609/896608-20160906141214426-402089066.png" alt=""></p>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+  <div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center;">
+    <div>坚持原创技术&生活分享，您的支持将鼓励我继续创作！</div>
+    <button id="rewardButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}">
+      <span>赏</span>
+    </button>
+    <div id="QR" style="display: none;">
+      
+        <div id="wechat" style="display: inline-block">
+          <img id="wechat_qr" src="/images/微信-收款.JPG" alt="蒋成智 WeChat Pay"/>
+          <p>微信打赏</p>
+        </div>
+      
+      
+        <div id="alipay" style="display: inline-block">
+          <img id="alipay_qr" src="/images/支付宝-收款.JPG" alt="蒋成智 Alipay"/>
+          <p>支付宝打赏</p>
+        </div>
+      
+    </div>
+  </div>
+
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/git/" rel="tag">#git</a>
+          
+        </div>
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2016/06/11/移动端上传照片 预览+Draw on Canvas's Demo（解决 iOS 等设备照片旋转 90 度的 bug）/" rel="next" title="移动端上传照片 预览 + Draw on Canvas's Demo（解决 iOS 等设备照片旋转 90 度的 bug）">
+                <i class="fa fa-chevron-left"></i> 移动端上传照片 预览 + Draw on Canvas's Demo（解决 iOS 等设备照片旋转 90 度的 bug）
+              </a>
+            
+          </div>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div class="ds-thread" data-thread-key="2016/09/06/一台电脑上的 git 同时使用两个 github 账户/"
+           data-title="一台电脑上的 git 同时使用两个 github 账户" data-url="http://yoursite.com/2016/09/06/一台电脑上的 git 同时使用两个 github 账户/">
+      </div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel ">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="http://cn.gravatar.com/userimage/110826796/0f9e16e4ae0776f52a4fb70bf02a5832.jpg?size=200"
+               alt="蒋成智" />
+          <p class="site-author-name" itemprop="name">蒋成智</p>
+          <p class="site-description motion-element" itemprop="description"></p>
+        </div>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/archives">
+              <span class="site-state-item-count">25</span>
+              <span class="site-state-item-name">日志</span>
+            </a>
+          </div>
+
+          
+            <div class="site-state-item site-state-categories">
+              <a href="/categories">
+                <span class="site-state-item-count">1</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            <div class="site-state-item site-state-tags">
+              <a href="/tags">
+                <span class="site-state-item-count">6</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://www.zhihu.com/people/xjnotxj" target="_blank" title="知乎">
+                  
+                    <i class="fa fa-fw fa-globe"></i>
+                  
+                  知乎
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="https://www.douban.com/people/xjnotxj/" target="_blank" title="豆瓣">
+                  
+                    <i class="fa fa-fw fa-globe"></i>
+                  
+                  豆瓣
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/xjnotxj" target="_blank" title="GitHub">
+                  
+                    <i class="fa fa-fw fa-github"></i>
+                  
+                  GitHub
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://www.cnblogs.com/xjnotxj/" target="_blank" title="博客园">
+                  
+                    <i class="fa fa-fw fa-globe"></i>
+                  
+                  博客园
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://www.jianshu.com/users/d7b6cb158217/latest_articles" target="_blank" title="简书">
+                  
+                    <i class="fa fa-fw fa-globe"></i>
+                  
+                  简书
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+
+      </section>
+
+      
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+            
+              
+            
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#需求："><span class="nav-number">1.</span> <span class="nav-text">需求：</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#思路："><span class="nav-number">2.</span> <span class="nav-text">思路：</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#解决方案："><span class="nav-number">3.</span> <span class="nav-text">解决方案：</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#一、生成两个-SSH-key"><span class="nav-number">3.1.</span> <span class="nav-text">一、生成两个 SSH key</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#二、添加私钥"><span class="nav-number">3.2.</span> <span class="nav-text">二、添加私钥</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#（1）打开-ssh-agent"><span class="nav-number">3.2.1.</span> <span class="nav-text">（1）打开 ssh-agent</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#（2）添加私钥"><span class="nav-number">3.2.2.</span> <span class="nav-text">（2）添加私钥</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#三、创建-config-文件"><span class="nav-number">3.3.</span> <span class="nav-text">三、创建 config 文件</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#四、部署-SSH-key"><span class="nav-number">3.4.</span> <span class="nav-text">四、部署 SSH key</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#五、远程测试【可跳过】"><span class="nav-number">3.5.</span> <span class="nav-text">五、远程测试【可跳过】</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#六、使用"><span class="nav-number">3.6.</span> <span class="nav-text">六、使用</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#（1）clone-到本地"><span class="nav-number">3.6.1.</span> <span class="nav-text">（1）clone 到本地</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#（2）记得给这个仓库设置局部的用户名和邮箱"><span class="nav-number">3.6.2.</span> <span class="nav-text">（2）记得给这个仓库设置局部的用户名和邮箱</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#（3）上述都成功后，会发现钥匙会由灰变绿"><span class="nav-number">3.6.3.</span> <span class="nav-text">（3）上述都成功后，会发现钥匙会由灰变绿</span></a></li></ol></li></ol></li></ol></div>
+            
+          </div>
+        </section>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2016</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">蒋成智</span>
+</div>
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Pisces
+  </a>
+</div>
+
+        
+
+        
+      </div>
+    </footer>
+
+    <div class="back-to-top">
+      <i class="fa fa-arrow-up"></i>
+    </div>
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+  
+  <script type="text/javascript" src="/vendors/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/vendors/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.0.1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.0.1"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.0.1"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.0.1"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.0.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.0.1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.0.1"></script>
+
+
+
+  
+
+  
+    
+  
+
+  <script type="text/javascript">
+    var duoshuoQuery = {short_name:"xjnotxj"};
+    (function() {
+      var ds = document.createElement('script');
+      ds.type = 'text/javascript';ds.async = true;
+      ds.id = 'duoshuo-script';
+      ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+      ds.charset = 'UTF-8';
+      (document.getElementsByTagName('head')[0]
+      || document.getElementsByTagName('body')[0]).appendChild(ds);
+    })();
+  </script>
+
+  
+    
+    <script src="/vendors/ua-parser-js/dist/ua-parser.min.js?v=0.7.9"></script>
+    <script src="/js/src/hook-duoshuo.js"></script>
+  
+
+
+
+
+
+
+  
+  
+
+  
+
+  
+
+  
+  <script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.1.js"></script>
+  <script>AV.initialize("uheKVt60RMVmWaf4J8Nbm862-gzGzoHsz", "EHNMdwpPcWyREbLjlRUBGMgG");</script>
+  <script>
+    function showTime(Counter) {
+      var query = new AV.Query(Counter);
+      var entries = [];
+      var $visitors = $(".leancloud_visitors");
+
+      $visitors.each(function () {
+        entries.push( $(this).attr("id").trim() );
+      });
+
+      query.containedIn('url', entries);
+      query.find()
+        .done(function (results) {
+          var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
+
+          if (results.length === 0) {
+            $visitors.find(COUNT_CONTAINER_REF).text(0);
+            return;
+          }
+
+          for (var i = 0; i < results.length; i++) {
+            var item = results[i];
+            var url = item.get('url');
+            var time = item.get('time');
+            var element = document.getElementById(url);
+
+            $(element).find(COUNT_CONTAINER_REF).text(time);
+          }
+          for(var i = 0; i < entries.length; i++) {
+            var url = entries[i];
+            var element = document.getElementById(url);
+            var countSpan = $(element).find(COUNT_CONTAINER_REF);
+            if( countSpan.text() == '') {
+              countSpan.text(0);
+            }
+          }
+        })
+        .fail(function (object, error) {
+          console.log("Error: " + error.code + " " + error.message);
+        });
+    }
+
+    function addCount(Counter) {
+      var $visitors = $(".leancloud_visitors");
+      var url = $visitors.attr('id').trim();
+      var title = $visitors.attr('data-flag-title').trim();
+      var query = new AV.Query(Counter);
+
+      query.equalTo("url", url);
+      query.find({
+        success: function(results) {
+          if (results.length > 0) {
+            var counter = results[0];
+            counter.fetchWhenSave(true);
+            counter.increment("time");
+            counter.save(null, {
+              success: function(counter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(counter.get('time'));
+              },
+              error: function(counter, error) {
+                console.log('Failed to save Visitor num, with error message: ' + error.message);
+              }
+            });
+          } else {
+            var newcounter = new Counter();
+            /* Set ACL */
+            var acl = new AV.ACL();
+            acl.setPublicReadAccess(true);
+            acl.setPublicWriteAccess(true);
+            newcounter.setACL(acl);
+            /* End Set ACL */
+            newcounter.set("title", title);
+            newcounter.set("url", url);
+            newcounter.set("time", 1);
+            newcounter.save(null, {
+              success: function(newcounter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
+              },
+              error: function(newcounter, error) {
+                console.log('Failed to create');
+              }
+            });
+          }
+        },
+        error: function(error) {
+          console.log('Error:' + error.code + " " + error.message);
+        }
+      });
+    }
+
+    $(function() {
+      var Counter = AV.Object.extend("Counter");
+      if ($('.leancloud_visitors').length == 1) {
+        addCount(Counter);
+      } else if ($('.post-title-link').length > 1) {
+        showTime(Counter);
+      }
+    });
+  </script>
+
+
+
+  
+
+</body>
+</html>

@@ -2,6 +2,7 @@
 title: Nginx+CI 出现 404 错误
 date: 2016-03-03 17:32:00
 tags: php-CodeIgniter
+categories: 技术
 ---
 
 ## 背景： 

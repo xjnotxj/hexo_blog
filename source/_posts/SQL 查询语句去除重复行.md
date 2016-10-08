@@ -2,6 +2,7 @@
 title: SQL 查询语句去除重复行
 date: 2016-03-11 16:44:00
 tags: SQL
+categories: 技术
 ---
 
 ## 1.存在两条完全相同的纪录

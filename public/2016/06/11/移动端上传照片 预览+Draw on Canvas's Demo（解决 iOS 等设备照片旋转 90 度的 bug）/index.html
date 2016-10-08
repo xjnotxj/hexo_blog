@@ -1,0 +1,972 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/vendors/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/vendors/font-awesome/css/font-awesome.min.css?v=4.4.0" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.0.1" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="前端," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.0.1" />
+
+
+
+
+
+
+<meta name="description" content="背景：本人的一个移动端 H5 项目，需求如下:
+
+需求一：手机相册选取或拍摄照片后在页面上预览需求二：然后绘制在 canvas 画布上
+
+这里，我们先看一个 demo:
+
+需求一： drawTempPhoto 方法需求二： drawPhoto 方法
+
+操作步骤：1.点击选择文件，拍摄一张照片，此时”预览：”文字下会显示你刚才拍摄的照片2.再点击”draw on Canvas”，该按钮下的画布会绘制">
+<meta property="og:type" content="article">
+<meta property="og:title" content="移动端上传照片 预览 + Draw on Canvas's Demo（解决 iOS 等设备照片旋转 90 度的 bug）">
+<meta property="og:url" content="http://yoursite.com/2016/06/11/移动端上传照片 预览+Draw on Canvas's Demo（解决 iOS 等设备照片旋转 90 度的 bug）/index.html">
+<meta property="og:site_name" content="小蒋不素小蒋">
+<meta property="og:description" content="背景：本人的一个移动端 H5 项目，需求如下:
+
+需求一：手机相册选取或拍摄照片后在页面上预览需求二：然后绘制在 canvas 画布上
+
+这里，我们先看一个 demo:
+
+需求一： drawTempPhoto 方法需求二： drawPhoto 方法
+
+操作步骤：1.点击选择文件，拍摄一张照片，此时”预览：”文字下会显示你刚才拍摄的照片2.再点击”draw on Canvas”，该按钮下的画布会绘制">
+<meta property="og:image" content="http://images2015.cnblogs.com/blog/896608/201606/896608-20160611221139058-105612097.png">
+<meta property="og:image" content="http://images2015.cnblogs.com/blog/896608/201606/896608-20160611221140824-608883375.png">
+<meta property="og:image" content="http://images2015.cnblogs.com/blog/896608/201606/896608-20160611221142027-1855846622.png">
+<meta property="og:image" content="http://images2015.cnblogs.com/blog/896608/201606/896608-20160611221143355-1662776781.png">
+<meta property="og:image" content="http://images2015.cnblogs.com/blog/896608/201606/896608-20160611221144371-343240701.png">
+<meta property="og:image" content="http://images2015.cnblogs.com/blog/896608/201606/896608-20160611221145371-963458118.gif">
+<meta property="og:image" content="http://images2015.cnblogs.com/blog/896608/201606/896608-20160611221147277-517861637.png">
+<meta property="og:updated_time" content="2016-10-08T16:00:54.485Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="移动端上传照片 预览 + Draw on Canvas's Demo（解决 iOS 等设备照片旋转 90 度的 bug）">
+<meta name="twitter:description" content="背景：本人的一个移动端 H5 项目，需求如下:
+
+需求一：手机相册选取或拍摄照片后在页面上预览需求二：然后绘制在 canvas 画布上
+
+这里，我们先看一个 demo:
+
+需求一： drawTempPhoto 方法需求二： drawPhoto 方法
+
+操作步骤：1.点击选择文件，拍摄一张照片，此时”预览：”文字下会显示你刚才拍摄的照片2.再点击”draw on Canvas”，该按钮下的画布会绘制">
+<meta name="twitter:image" content="http://images2015.cnblogs.com/blog/896608/201606/896608-20160611221139058-105612097.png">
+
+
+
+<script type="text/javascript" id="hexo.configuration">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    scheme: 'Pisces',
+    sidebar: {"position":"left","display":"post"},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: 0,
+      author: '博主'
+    }
+  };
+</script>
+
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2016/06/11/移动端上传照片 预览+Draw on Canvas's Demo（解决 iOS 等设备照片旋转 90 度的 bug）/"/>
+
+  <title> 移动端上传照片 预览 + Draw on Canvas's Demo（解决 iOS 等设备照片旋转 90 度的 bug） | 小蒋不素小蒋 </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "//hm.baidu.com/hm.js?ca9c79cc2c25ea90183640659d5e0d17";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-meta ">
+  
+
+  <div class="custom-logo-site-title">
+    <a href="/"  class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <span class="site-title">小蒋不素小蒋</span>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+  <p class="site-subtitle">点滴生活与技术</p>
+</div>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="st-search-show-outputs">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <form class="site-search-form">
+  <input type="text" id="st-search-input" class="st-search-input st-default-search-input" />
+</form>
+
+<script type="text/javascript">
+  (function(w,d,t,u,n,s,e){w['SwiftypeObject']=n;w[n]=w[n]||function(){
+    (w[n].q=w[n].q||[]).push(arguments);};s=d.createElement(t);
+    e=d.getElementsByTagName(t)[0];s.async=1;s.src=u;e.parentNode.insertBefore(s,e);
+  })(window,document,'script','//s.swiftypecdn.com/install/v2/st.js','_st');
+
+  _st('install', 'GzywR78iuG9Hcfx3PR-1','2.0.0');
+</script>
+
+
+
+    </div>
+  
+</nav>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                移动端上传照片 预览 + Draw on Canvas's Demo（解决 iOS 等设备照片旋转 90 度的 bug）
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2016-06-11T22:12:00+08:00" content="2016-06-11">
+              2016-06-11
+            </time>
+          </span>
+
+          
+            <span class="post-category" >
+              &nbsp; | &nbsp;
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/技术/" itemprop="url" rel="index">
+                    <span itemprop="name">技术</span>
+                  </a>
+                </span>
+
+                
+                
+
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                &nbsp; | &nbsp;
+                <a href="/2016/06/11/移动端上传照片 预览+Draw on Canvas's Demo（解决 iOS 等设备照片旋转 90 度的 bug）/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/06/11/移动端上传照片 预览+Draw on Canvas's Demo（解决 iOS 等设备照片旋转 90 度的 bug）/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+          
+          
+             <span id="/2016/06/11/移动端上传照片 预览+Draw on Canvas's Demo（解决 iOS 等设备照片旋转 90 度的 bug）/" class="leancloud_visitors" data-flag-title="移动端上传照片 预览 + Draw on Canvas's Demo（解决 iOS 等设备照片旋转 90 度的 bug）">
+               &nbsp; | &nbsp;
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               <span class="post-meta-item-text">阅读次数 </span>
+               <span class="leancloud-visitors-count"></span>
+              </span>
+          
+
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h2 id="背景："><a href="#背景：" class="headerlink" title="背景："></a>背景：</h2><p>本人的一个移动端 H5 项目，需求如下:</p>
+<blockquote>
+<p><code>需求一</code>：手机相册选取或拍摄照片后在页面上<strong>预览</strong><br><code>需求二</code>：然后<strong>绘制在 canvas</strong> 画布上</p>
+</blockquote>
+<p>这里，我们先看一个 demo:<br><iframe scrolling="no" width="100%" height="300" src="http://jsfiddle.net/83qfqpk8/embedded/html,css,result/light" frameborder="0" allowfullscreen></iframe></p>
+<blockquote>
+<p><code>需求一</code>： <code>drawTempPhoto</code> 方法<br><code>需求二</code>： <code>drawPhoto</code> 方法</p>
+</blockquote>
+<h3 id="操作步骤："><a href="#操作步骤：" class="headerlink" title="操作步骤："></a>操作步骤：</h3><p><img src="http://images2015.cnblogs.com/blog/896608/201606/896608-20160611221139058-105612097.png" alt=""><br>1.点击选择文件，拍摄一张照片，此时”预览：”文字下会显示你刚才拍摄的照片<br>2.再点击”draw on Canvas”，该按钮下的画布会绘制你刚才拍摄的照片</p>
+<h3 id="正常的结果："><a href="#正常的结果：" class="headerlink" title="正常的结果："></a>正常的结果：</h3><p><img src="http://images2015.cnblogs.com/blog/896608/201606/896608-20160611221140824-608883375.png" alt=""></p>
+<h2 id="正文："><a href="#正文：" class="headerlink" title="正文："></a>正文：</h2><h3 id="一、让-input-file-支持-拍照-相册-选取"><a href="#一、让-input-file-支持-拍照-相册-选取" class="headerlink" title="一、让 input file 支持 拍照 + 相册 选取"></a>一、让 input file 支持 <strong>拍照 + 相册</strong> 选取</h3><figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">&lt;input accept=<span class="string">"image/*"</span> type=<span class="string">"file"</span> id=<span class="string">"file"</span> /&gt;</div><div class="line"><span class="comment">//有一些特殊的安卓机还需要加上 capture="camera" 属性才能支持拍照</span></div></pre></td></tr></table></figure>
+<h3 id="二、需求一的预览功能使用-html5-提供的新-API：FileReader"><a href="#二、需求一的预览功能使用-html5-提供的新-API：FileReader" class="headerlink" title="二、需求一的预览功能使用 html5 提供的新 API：FileReader"></a>二、<code>需求一</code>的<strong>预览</strong>功能使用 html5 提供的新 API：<strong>FileReader</strong></h3><blockquote>
+<p>介绍：<br> FileReader 接口提供了一个异步 API，使用该 API 可以在浏览器主线程中异步访问文件系统，读取文件中的数据。</p>
+<p> API 文档：<br> <a href="https://developer.mozilla.org/zh-CN/docs/Web/API/FileReader" target="_blank" rel="external">https://developer.mozilla.org/zh-CN/docs/Web/API/FileReader</a></p>
+<p> 兼容性：<br> 主流浏览器都支持。除了 IE 有点问题，详情看下图：<br><img src="http://images2015.cnblogs.com/blog/896608/201606/896608-20160611221142027-1855846622.png" alt=""></p>
+</blockquote>
+<h4 id="使用方法（使用-drawTempPhoto-方法实现需求一）："><a href="#使用方法（使用-drawTempPhoto-方法实现需求一）：" class="headerlink" title="使用方法（使用 drawTempPhoto 方法实现需求一）："></a>使用方法（使用 <code>drawTempPhoto</code> 方法实现<code>需求一</code>）：</h4><figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div></pre></td><td class="code"><pre><div class="line"><span class="comment">//绘制照片</span></div><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">drawTempPhoto</span><span class="params">()</span> </span>&#123;</div><div class="line"></div><div class="line">    <span class="comment">//检验是否为图像文件</span></div><div class="line">    <span class="keyword">var</span> file = document.getElementById(<span class="string">"file"</span>).files[<span class="number">0</span>];</div><div class="line">    <span class="keyword">if</span> (!/image\/\w+/.test(file.type)) &#123;</div><div class="line">        alert(<span class="string">"看清楚哦，这个需要图片！"</span>);</div><div class="line">        <span class="keyword">return</span> <span class="keyword">false</span>;</div><div class="line">    &#125;</div><div class="line">    <span class="keyword">var</span> reader = <span class="keyword">new</span> FileReader();</div><div class="line">    <span class="comment">//将文件以 Data URL 形式读入页面</span></div><div class="line">    reader.readAsDataURL(file);</div><div class="line">    reader.onload = <span class="function"><span class="keyword">function</span> <span class="params">(e)</span> </span>&#123;</div><div class="line"></div><div class="line">        <span class="comment">//预览效果</span></div><div class="line">        <span class="keyword">var</span> img = $(<span class="string">"#photo"</span>)[<span class="number">0</span>];</div><div class="line">        <span class="comment">//加载图片，此处的 this.result 为 base64 格式</span></div><div class="line">        img.src = this.result;</div><div class="line"></div><div class="line">    &#125;</div><div class="line"></div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<blockquote>
+<p><img src="http://images2015.cnblogs.com/blog/896608/201606/896608-20160611221143355-1662776781.png" alt=""><br>在本人的三星 note5 的手机中，<code>需求一</code>会出现照片预览逆时针旋转 90 度的 bug（其实用下面介绍的的 exif.js 方法，可以知道 iOS 和三星所拍的照片 Orientation 值都是 6，而前者做了预览的修正，后者则直接显示了出来，导致了旋转）。</p>
+</blockquote>
+<h4 id="解决方案"><a href="#解决方案" class="headerlink" title="解决方案:"></a>解决方案:</h4><p><strong><em>判断是否为三星手机设备，然后把预览的图片顺时针旋转 90 度恢复正常（例如可以用 canvas 技术模拟预览效果）。</em></strong></p>
+<p>于是修改的 <code>drawTempPhoto</code> 方法如下【line：21-27】：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div></pre></td><td class="code"><pre><div class="line"><span class="comment">//绘制照片</span></div><div class="line">    <span class="function"><span class="keyword">function</span> <span class="title">drawTempPhoto</span><span class="params">()</span> </span>&#123;</div><div class="line"></div><div class="line">        <span class="comment">//检验是否为图像文件</span></div><div class="line">        <span class="keyword">var</span> file = document.getElementById(<span class="string">"file"</span>).files[<span class="number">0</span>];</div><div class="line">        <span class="keyword">if</span> (!/image\/\w+/.test(file.type)) &#123;</div><div class="line">            alert(<span class="string">"看清楚哦，这个需要图片！"</span>);</div><div class="line">            <span class="keyword">return</span> <span class="keyword">false</span>;</div><div class="line">        &#125;</div><div class="line">        <span class="keyword">var</span> reader = <span class="keyword">new</span> FileReader();</div><div class="line">        <span class="comment">//将文件以 Data URL 形式读入页面</span></div><div class="line">        reader.readAsDataURL(file);</div><div class="line">        reader.onload = <span class="function"><span class="keyword">function</span> <span class="params">(e)</span> </span>&#123;</div><div class="line"></div><div class="line">            <span class="comment">//预览效果</span></div><div class="line">            <span class="keyword">var</span> img = $(<span class="string">"#photo"</span>)[<span class="number">0</span>];</div><div class="line">            <span class="comment">//加载图片，此处的 this.result 为 base64 格式</span></div><div class="line">            img.src = this.result;</div><div class="line">            img.onload = <span class="function"><span class="keyword">function</span><span class="params">()</span></span>&#123;</div><div class="line"></div><div class="line">                <span class="comment">//获取照片的拍摄方向</span></div><div class="line">                <span class="keyword">var</span> orient = getPhotoOrientation(img);</div><div class="line">                alert(<span class="string">"orient1:"</span> + orient);</div><div class="line">                <span class="comment">//判断是否是三星手机</span></div><div class="line">　　          <span class="comment">// if (isSamsung) &#123;</span></div><div class="line">                      <span class="comment">// 做旋转的适配……</span></div><div class="line">                <span class="comment">// &#125;</span></div><div class="line"></div><div class="line">            &#125;;</div><div class="line"></div><div class="line">        &#125;</div><div class="line"></div><div class="line">    &#125;</div></pre></td></tr></table></figure>
+<h3 id="三、需求二绘制到-Canvas，使用-exif-js-解决-iOS（包括三星-note5）等一些手机照片旋转-90-度的-bug"><a href="#三、需求二绘制到-Canvas，使用-exif-js-解决-iOS（包括三星-note5）等一些手机照片旋转-90-度的-bug" class="headerlink" title="三、需求二绘制到 Canvas，使用 exif.js 解决 iOS（包括三星 note5）等一些手机照片旋转 90 度的 bug"></a>三、<code>需求二</code>绘制到 Canvas，使用 exif.js 解决 iOS（包括三星 note5）等一些手机照片旋转 90 度的 bug</h3><p>在 iOS 上，表现如下：<br><img src="http://images2015.cnblogs.com/blog/896608/201606/896608-20160611221144371-343240701.png" alt=""></p>
+<p>可见，在 <strong>iOS</strong> 上第一张图正常，而第二张图<strong>逆时针旋转了 90 度</strong>，而其他的<strong>安卓</strong>两步都是<strong>正常的显示</strong>。</p>
+<p>那我们来看看 <strong>exif.js</strong> 是什么？</p>
+<blockquote>
+<p>介绍：<br>Exif.js 提供了 JavaScript 读取图像的原始数据的功能扩展，例如：<strong>拍照方向</strong>、相机设备型号、拍摄时间、ISO 感光度、GPS 地理位置等数据。</p>
+<p>兼容性：<br>EXIF 数据主要来自拍摄的照片，多用于移动端开发，PC 端也会用到，此插件兼容主流浏览器，IE10 以下不支持。</p>
+<p>下载地址：<br><a href="https://github.com/exif-js/exif-js" target="_blank" rel="external">https://github.com/exif-js/exif-js</a></p>
+</blockquote>
+<p>这里我们知道了 exif.js 其实是获取一张拍摄照片的元信息的，进而获取它最初的拍照方向，这很可能跟 iOS 图片旋转的 bug 有关。</p>
+<p>而 exif.js 提供的一张照片的 <strong>Orientation</strong> 属性如下：<br><img src="http://images2015.cnblogs.com/blog/896608/201606/896608-20160611221145371-963458118.gif" alt=""></p>
+<h4 id="使用方法："><a href="#使用方法：" class="headerlink" title="使用方法："></a>使用方法：</h4><p>1.我首先引入 <code>exif.js</code>：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">&lt;script src=<span class="string">"./js/exif.js"</span>&gt;&lt;/script&gt;</div></pre></td></tr></table></figure>
+<p>2.然后封装成 <code>getPhotoOrientation</code> 方法：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line"><span class="comment">//获取照片的元信息（拍摄方向）</span></div><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">getPhotoOrientation</span><span class="params">(img)</span></span>&#123;</div><div class="line">  <span class="keyword">var</span> orient;</div><div class="line">  EXIF.getData(img, <span class="function"><span class="keyword">function</span> <span class="params">()</span> </span>&#123;</div><div class="line">      orient = EXIF.getTag(this, <span class="string">'Orientation'</span>);</div><div class="line">  &#125;);</div><div class="line">  <span class="keyword">return</span> orient;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>3.分别在操作步骤一选择图片和操作步骤二 draw on Canvas，Alert 照片的 Orientation 值，本人的测试机有限，请见谅，结果如下：</p>
+<table>
+<thead>
+<tr>
+<th>手机型号</th>
+<th>Orientation值</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>iphone 6S</td>
+<td><strong>6</strong></td>
+</tr>
+<tr>
+<td>小米4S</td>
+<td>undefined</td>
+</tr>
+<tr>
+<td>华为荣耀4A</td>
+<td>1</td>
+</tr>
+<tr>
+<td>PC</td>
+<td>undefined</td>
+</tr>
+</tbody>
+</table>
+<p>可以看到，小米 4S 和 PC 都是 undefined，表示图片没有拍摄方向或者根本没记录，华为荣耀 4A 是 1，表示的是正确的方向，以上都没问题。但 iphone 6S 为 6！<strong>所以之所以出现了图片的旋转，是因为它本身的 Orientation 就不正常！！</strong></p>
+<p><strong><em>因此解决这个 bug 的思路是：获取到照片拍摄的方向，对 ios 照片进行角度旋转修正。</em></strong></p>
+<h4 id="解决方案："><a href="#解决方案：" class="headerlink" title="解决方案："></a>解决方案：</h4><p>修改后的 demo:<br><iframe scrolling="no" width="100%" height="300" src="http://jsfiddle.net/k3z5ev26/embedded/javascript,html,css,result/light" frameborder="0" allowfullscreen></iframe></p>
+<p>除了上面引入的 <code>exif.js</code> 和添加的 <code>getPhotoOrientation</code> 方法，我又修改了 <code>drawPhoto</code> 方法：</p>
+<p>1.旧 <code>drawPhoto</code> 方法：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div></pre></td><td class="code"><pre><div class="line"><span class="comment">//绘制照片</span></div><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">drawPhoto</span><span class="params">(photo, x, y, w, h)</span> </span>&#123;</div><div class="line"></div><div class="line">    <span class="keyword">var</span> canvas = document.getElementById(<span class="string">"canvas"</span>);</div><div class="line">    <span class="keyword">if</span> (canvas.getContext) &#123;</div><div class="line">        <span class="keyword">var</span> ctx = canvas.getContext(<span class="string">"2d"</span>);</div><div class="line"></div><div class="line">        <span class="comment">//draw on Canvas</span></div><div class="line">        <span class="keyword">var</span> img = <span class="keyword">new</span> Image();</div><div class="line">        img.onload = <span class="function"><span class="keyword">function</span> <span class="params">()</span> </span>&#123;</div><div class="line"></div><div class="line">            <span class="keyword">var</span> canvas_w = Number(ctx.canvas.width);</div><div class="line">            <span class="keyword">var</span> canvas_h = Number(ctx.canvas.height);</div><div class="line"></div><div class="line">            <span class="comment">// 执行 Canvas 的 drawImage 语句</span></div><div class="line">            ctx.drawImage(img, x, y, w, h);</div><div class="line"></div><div class="line">        &#125;</div><div class="line">        img.src = photo.src; <span class="comment">// 设置图片源地址</span></div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>2.新 <code>drawPhoto</code> 方法【line：4-6，19-30】：<br><figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div></pre></td><td class="code"><pre><div class="line"><span class="comment">//绘制照片</span></div><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">drawPhoto</span><span class="params">(photo, x, y, w, h)</span> </span>&#123;</div><div class="line"></div><div class="line">    <span class="comment">//获取照片的拍摄方向</span></div><div class="line">    <span class="keyword">var</span> orient = getPhotoOrientation(photo);</div><div class="line">    alert(<span class="string">"orient2:"</span>+orient);</div><div class="line"></div><div class="line">    <span class="keyword">var</span> canvas = document.getElementById(<span class="string">"canvas"</span>);</div><div class="line">    <span class="keyword">if</span> (canvas.getContext) &#123;</div><div class="line">        <span class="keyword">var</span> ctx = canvas.getContext(<span class="string">"2d"</span>);</div><div class="line"></div><div class="line">        <span class="comment">//draw on Canvas</span></div><div class="line">        <span class="keyword">var</span> img = <span class="keyword">new</span> Image();</div><div class="line">        img.onload = <span class="function"><span class="keyword">function</span> <span class="params">()</span> </span>&#123;</div><div class="line"></div><div class="line">            <span class="keyword">var</span> canvas_w = Number(ctx.canvas.width);</div><div class="line">            <span class="keyword">var</span> canvas_h = Number(ctx.canvas.height);</div><div class="line"></div><div class="line">            <span class="comment">//判断图片拍摄方向是否旋转了 90 度</span></div><div class="line">            <span class="keyword">if</span> (orient == <span class="number">6</span>) &#123;</div><div class="line">                ctx.save();<span class="comment">//保存状态</span></div><div class="line">                ctx.translate(canvas_w / <span class="number">2</span>, canvas_h / <span class="number">2</span>);<span class="comment">//设置画布上的(0,0)位置，也就是旋转的中心点</span></div><div class="line">                ctx.rotate(<span class="number">90</span> * Math.PI / <span class="number">180</span>);<span class="comment">//把画布旋转 90 度</span></div><div class="line">                <span class="comment">// 执行 Canvas 的 drawImage 语句</span></div><div class="line">                ctx.drawImage(img, Number(y) - canvas_h / <span class="number">2</span>, Number(x) - canvas_w / <span class="number">2</span>, h, w);<span class="comment">//把图片绘制在画布 translate 之前的中心点，</span></div><div class="line">                ctx.restore();<span class="comment">//恢复状态</span></div><div class="line">            &#125; <span class="keyword">else</span> &#123;</div><div class="line">                <span class="comment">// 执行 Canvas 的 drawImage 语句</span></div><div class="line">                ctx.drawImage(img, x, y, w, h);</div><div class="line">            &#125;</div><div class="line"></div><div class="line">        &#125;</div><div class="line">        img.src = photo.src; <span class="comment">// 设置图片源地址</span></div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>运行结果如下：<br><img src="http://images2015.cnblogs.com/blog/896608/201606/896608-20160611221147277-517861637.png" alt=""></p>
+<p>完美~</p>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+  <div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center;">
+    <div>坚持原创技术&生活分享，您的支持将鼓励我继续创作！</div>
+    <button id="rewardButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}">
+      <span>赏</span>
+    </button>
+    <div id="QR" style="display: none;">
+      
+        <div id="wechat" style="display: inline-block">
+          <img id="wechat_qr" src="/images/微信-收款.JPG" alt="蒋成智 WeChat Pay"/>
+          <p>微信打赏</p>
+        </div>
+      
+      
+        <div id="alipay" style="display: inline-block">
+          <img id="alipay_qr" src="/images/支付宝-收款.JPG" alt="蒋成智 Alipay"/>
+          <p>支付宝打赏</p>
+        </div>
+      
+    </div>
+  </div>
+
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/前端/" rel="tag">#前端</a>
+          
+        </div>
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2016/06/11/移动端禁止页面下滑/" rel="next" title="移动端禁止页面下滑">
+                <i class="fa fa-chevron-left"></i> 移动端禁止页面下滑
+              </a>
+            
+          </div>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2016/09/06/一台电脑上的 git 同时使用两个 github 账户/" rel="prev" title="一台电脑上的 git 同时使用两个 github 账户">
+                一台电脑上的 git 同时使用两个 github 账户 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div class="ds-thread" data-thread-key="2016/06/11/移动端上传照片 预览+Draw on Canvas's Demo（解决 iOS 等设备照片旋转 90 度的 bug）/"
+           data-title="移动端上传照片 预览 + Draw on Canvas's Demo（解决 iOS 等设备照片旋转 90 度的 bug）" data-url="http://yoursite.com/2016/06/11/移动端上传照片 预览+Draw on Canvas's Demo（解决 iOS 等设备照片旋转 90 度的 bug）/">
+      </div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel ">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="http://cn.gravatar.com/userimage/110826796/0f9e16e4ae0776f52a4fb70bf02a5832.jpg?size=200"
+               alt="蒋成智" />
+          <p class="site-author-name" itemprop="name">蒋成智</p>
+          <p class="site-description motion-element" itemprop="description"></p>
+        </div>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/archives">
+              <span class="site-state-item-count">25</span>
+              <span class="site-state-item-name">日志</span>
+            </a>
+          </div>
+
+          
+            <div class="site-state-item site-state-categories">
+              <a href="/categories">
+                <span class="site-state-item-count">1</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            <div class="site-state-item site-state-tags">
+              <a href="/tags">
+                <span class="site-state-item-count">6</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://www.zhihu.com/people/xjnotxj" target="_blank" title="知乎">
+                  
+                    <i class="fa fa-fw fa-globe"></i>
+                  
+                  知乎
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="https://www.douban.com/people/xjnotxj/" target="_blank" title="豆瓣">
+                  
+                    <i class="fa fa-fw fa-globe"></i>
+                  
+                  豆瓣
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/xjnotxj" target="_blank" title="GitHub">
+                  
+                    <i class="fa fa-fw fa-github"></i>
+                  
+                  GitHub
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://www.cnblogs.com/xjnotxj/" target="_blank" title="博客园">
+                  
+                    <i class="fa fa-fw fa-globe"></i>
+                  
+                  博客园
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://www.jianshu.com/users/d7b6cb158217/latest_articles" target="_blank" title="简书">
+                  
+                    <i class="fa fa-fw fa-globe"></i>
+                  
+                  简书
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+
+      </section>
+
+      
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+            
+              
+            
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#背景："><span class="nav-number">1.</span> <span class="nav-text">背景：</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#操作步骤："><span class="nav-number">1.1.</span> <span class="nav-text">操作步骤：</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#正常的结果："><span class="nav-number">1.2.</span> <span class="nav-text">正常的结果：</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#正文："><span class="nav-number">2.</span> <span class="nav-text">正文：</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#一、让-input-file-支持-拍照-相册-选取"><span class="nav-number">2.1.</span> <span class="nav-text">一、让 input file 支持 拍照 + 相册 选取</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#二、需求一的预览功能使用-html5-提供的新-API：FileReader"><span class="nav-number">2.2.</span> <span class="nav-text">二、需求一的预览功能使用 html5 提供的新 API：FileReader</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#使用方法（使用-drawTempPhoto-方法实现需求一）："><span class="nav-number">2.2.1.</span> <span class="nav-text">使用方法（使用 drawTempPhoto 方法实现需求一）：</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#解决方案"><span class="nav-number">2.2.2.</span> <span class="nav-text">解决方案:</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#三、需求二绘制到-Canvas，使用-exif-js-解决-iOS（包括三星-note5）等一些手机照片旋转-90-度的-bug"><span class="nav-number">2.3.</span> <span class="nav-text">三、需求二绘制到 Canvas，使用 exif.js 解决 iOS（包括三星 note5）等一些手机照片旋转 90 度的 bug</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#使用方法："><span class="nav-number">2.3.1.</span> <span class="nav-text">使用方法：</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#解决方案："><span class="nav-number">2.3.2.</span> <span class="nav-text">解决方案：</span></a></li></ol></li></ol></li></ol></div>
+            
+          </div>
+        </section>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2016</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">蒋成智</span>
+</div>
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Pisces
+  </a>
+</div>
+
+        
+
+        
+      </div>
+    </footer>
+
+    <div class="back-to-top">
+      <i class="fa fa-arrow-up"></i>
+    </div>
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+  
+  <script type="text/javascript" src="/vendors/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/vendors/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.0.1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.0.1"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.0.1"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.0.1"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.0.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.0.1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.0.1"></script>
+
+
+
+  
+
+  
+    
+  
+
+  <script type="text/javascript">
+    var duoshuoQuery = {short_name:"xjnotxj"};
+    (function() {
+      var ds = document.createElement('script');
+      ds.type = 'text/javascript';ds.async = true;
+      ds.id = 'duoshuo-script';
+      ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+      ds.charset = 'UTF-8';
+      (document.getElementsByTagName('head')[0]
+      || document.getElementsByTagName('body')[0]).appendChild(ds);
+    })();
+  </script>
+
+  
+    
+    <script src="/vendors/ua-parser-js/dist/ua-parser.min.js?v=0.7.9"></script>
+    <script src="/js/src/hook-duoshuo.js"></script>
+  
+
+
+
+
+
+
+  
+  
+
+  
+
+  
+
+  
+  <script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.1.js"></script>
+  <script>AV.initialize("uheKVt60RMVmWaf4J8Nbm862-gzGzoHsz", "EHNMdwpPcWyREbLjlRUBGMgG");</script>
+  <script>
+    function showTime(Counter) {
+      var query = new AV.Query(Counter);
+      var entries = [];
+      var $visitors = $(".leancloud_visitors");
+
+      $visitors.each(function () {
+        entries.push( $(this).attr("id").trim() );
+      });
+
+      query.containedIn('url', entries);
+      query.find()
+        .done(function (results) {
+          var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
+
+          if (results.length === 0) {
+            $visitors.find(COUNT_CONTAINER_REF).text(0);
+            return;
+          }
+
+          for (var i = 0; i < results.length; i++) {
+            var item = results[i];
+            var url = item.get('url');
+            var time = item.get('time');
+            var element = document.getElementById(url);
+
+            $(element).find(COUNT_CONTAINER_REF).text(time);
+          }
+          for(var i = 0; i < entries.length; i++) {
+            var url = entries[i];
+            var element = document.getElementById(url);
+            var countSpan = $(element).find(COUNT_CONTAINER_REF);
+            if( countSpan.text() == '') {
+              countSpan.text(0);
+            }
+          }
+        })
+        .fail(function (object, error) {
+          console.log("Error: " + error.code + " " + error.message);
+        });
+    }
+
+    function addCount(Counter) {
+      var $visitors = $(".leancloud_visitors");
+      var url = $visitors.attr('id').trim();
+      var title = $visitors.attr('data-flag-title').trim();
+      var query = new AV.Query(Counter);
+
+      query.equalTo("url", url);
+      query.find({
+        success: function(results) {
+          if (results.length > 0) {
+            var counter = results[0];
+            counter.fetchWhenSave(true);
+            counter.increment("time");
+            counter.save(null, {
+              success: function(counter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(counter.get('time'));
+              },
+              error: function(counter, error) {
+                console.log('Failed to save Visitor num, with error message: ' + error.message);
+              }
+            });
+          } else {
+            var newcounter = new Counter();
+            /* Set ACL */
+            var acl = new AV.ACL();
+            acl.setPublicReadAccess(true);
+            acl.setPublicWriteAccess(true);
+            newcounter.setACL(acl);
+            /* End Set ACL */
+            newcounter.set("title", title);
+            newcounter.set("url", url);
+            newcounter.set("time", 1);
+            newcounter.save(null, {
+              success: function(newcounter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
+              },
+              error: function(newcounter, error) {
+                console.log('Failed to create');
+              }
+            });
+          }
+        },
+        error: function(error) {
+          console.log('Error:' + error.code + " " + error.message);
+        }
+      });
+    }
+
+    $(function() {
+      var Counter = AV.Object.extend("Counter");
+      if ($('.leancloud_visitors').length == 1) {
+        addCount(Counter);
+      } else if ($('.post-title-link').length > 1) {
+        showTime(Counter);
+      }
+    });
+  </script>
+
+
+
+  
+
+</body>
+</html>

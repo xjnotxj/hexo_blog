@@ -14,7 +14,7 @@ keywords: "Hexo, NexT"
 rss:
 
 # Specify the date when the site was setup
-#since: 2015
+since: 2016
 
 # Canonical, set a canonical link tag in your hexo, you could use it for your SEO of blog.
 # See: https://support.google.com/webmasters/answer/139066
@@ -33,7 +33,7 @@ menu:
   about: /about
   archives: /archives
   tags: /tags
-  commonweal: /404.html
+#  commonweal: /404.html
 
 
 # Enable/Disable menu icons.
@@ -119,9 +119,13 @@ font:
 # Social Links
 # Key is the link label showing to end users.
 # Value is the target link (E.g. GitHub: https://github.com/iissnan)
-#social:
+social:
   #LinkLabel: Link
-
+  知乎: https://www.zhihu.com/people/xjnotxj
+  豆瓣: https://www.douban.com/people/xjnotxj/
+  GitHub: https://github.com/xjnotxj
+  博客园: http://www.cnblogs.com/xjnotxj/
+  简书: http://www.jianshu.com/users/d7b6cb158217/latest_articles
 
 # Social Links Icons
 # Icon Mapping:
@@ -133,9 +137,12 @@ social_icons:
   # Icon Mappings.
   # KeyMapsToSocalItemKey: NameOfTheIconFromFontAwesome
   GitHub: github
-  Twitter: twitter
-  Weibo: weibo
-
+  博客园: globe
+#  Twitter: twitter
+#  Weibo: weibo
+  知乎: globe
+  豆瓣: globe
+  简书: globe
 
 # Sidebar Avatar
 # in theme directory(source/images): /images/avatar.jpg
@@ -394,3 +401,8 @@ images: images
 
 # Theme version
 version: 5.0.1
+
+# 打赏
+reward_comment: 坚持原创技术&生活分享，您的支持将鼓励我继续创作！
+wechatpay: /images/微信-收款.JPG
+alipay: /images/支付宝-收款.JPG

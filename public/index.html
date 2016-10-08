@@ -226,16 +226,6 @@
           </a>
         </li>
       
-        
-        <li class="menu-item menu-item-commonweal">
-          <a href="/404.html" rel="section">
-            
-              <i class="menu-item-icon fa fa-fw fa-heartbeat"></i> <br />
-            
-            公益404
-          </a>
-        </li>
-      
 
       
         <li class="menu-item menu-item-search">
@@ -305,6 +295,360 @@
             
               
                 
+                <a class="post-title-link" href="/2016/09/06/一台电脑上的 git 同时使用两个 github 账户/" itemprop="url">
+                  一台电脑上的 git 同时使用两个 github 账户
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2016-09-06T14:12:00+08:00" content="2016-09-06">
+              2016-09-06
+            </time>
+          </span>
+
+          
+            <span class="post-category" >
+              &nbsp; | &nbsp;
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/技术/" itemprop="url" rel="index">
+                    <span itemprop="name">技术</span>
+                  </a>
+                </span>
+
+                
+                
+
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                &nbsp; | &nbsp;
+                <a href="/2016/09/06/一台电脑上的 git 同时使用两个 github 账户/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/09/06/一台电脑上的 git 同时使用两个 github 账户/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+          
+          
+             <span id="/2016/09/06/一台电脑上的 git 同时使用两个 github 账户/" class="leancloud_visitors" data-flag-title="一台电脑上的 git 同时使用两个 github 账户">
+               &nbsp; | &nbsp;
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               <span class="post-meta-item-text">阅读次数 </span>
+               <span class="leancloud-visitors-count"></span>
+              </span>
+          
+
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h2 id="需求："><a href="#需求：" class="headerlink" title="需求："></a>需求：</h2><p>公司有 github 账号，自己有 github 账号，想在 git 上同时使用，两者互不干扰。</p>
+<h2 id="思路："><a href="#思路：" class="headerlink" title="思路："></a>思路：</h2><p>管理两个 SHH key。</p>
+<h2 id="解决方案："><a href="#解决方案：" class="headerlink" title="解决方案："></a>解决方案：</h2><h3 id="一、生成两个-SSH-key"><a href="#一、生成两个-SSH-key" class="headerlink" title="一、生成两个 SSH key"></a>一、生成两个 SSH key</h3><p>为了举例方便，这里使用“<strong>one</strong>”和“<strong>two</strong>”两个账户。下同。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">$ ssh-keygen -t rsa -C &quot;one@gmail.com&quot;</div><div class="line"></div><div class="line">$ ssh-keygen -t rsa -C &quot;two@gmail.com&quot;</div></pre></td></tr></table></figure>
+<p>不要一路回车，分别在第一个对话的时候输入重命名（ <strong>id_rsa_one</strong> 和 <strong>id_rsa_two</strong> ），这样会生成<img src="http://images2015.cnblogs.com/blog/896608/201609/896608-20160906141211848-1361958749.png" alt="">两份包含私钥和公钥的 4 个文件。</p>
+<blockquote>
+<ol>
+<li>sh-keygen 是 linux命令，可以让两个机器之间使用 ssh 而不需要用户名和密码</li>
+<li>一定要在 ~/.ssh 路径下运行命令行，不然生成的文件不会出现在当前目录</li>
+</ol>
+</blockquote>
+<h3 id="二、添加私钥"><a href="#二、添加私钥" class="headerlink" title="二、添加私钥"></a>二、添加私钥</h3><h4 id="（1）打开-ssh-agent"><a href="#（1）打开-ssh-agent" class="headerlink" title="（1）打开 ssh-agent"></a>（1）打开 ssh-agent</h4><p>1.如果你是 github 官方的 bash：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ ssh-agent -s</div></pre></td></tr></table></figure>
+<p>2.如果你是其它，比如msysgit：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ eval $(ssh-agent -s)</div></pre></td></tr></table></figure></p>
+<h4 id="（2）添加私钥"><a href="#（2）添加私钥" class="headerlink" title="（2）添加私钥"></a>（2）添加私钥</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">$ ssh-add ~/.ssh/id_rsa_one</div><div class="line"></div><div class="line">$ ssh-add ~/.ssh/id_rsa_two</div></pre></td></tr></table></figure>
+<h3 id="三、创建-config-文件"><a href="#三、创建-config-文件" class="headerlink" title="三、创建 config 文件"></a>三、创建 config 文件</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ touch config</div></pre></td></tr></table></figure>
+<p>此时会出现空的 config 文件，然后添加如下内容：</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div></pre></td><td class="code"><pre><div class="line"># one(one@gmail.com)</div><div class="line"></div><div class="line">    <span class="tag">&lt;<span class="name">!-</span> <span class="attr">one.github.com</span> <span class="attr">--</span>&gt;</span></div><div class="line">    Host one.github.com</div><div class="line"></div><div class="line">　　HostName github.com</div><div class="line"></div><div class="line">　　PreferredAuthentications publickey</div><div class="line"></div><div class="line">　　IdentityFile ~/.ssh/id_rsa_one</div><div class="line"></div><div class="line">　　User one</div><div class="line"></div><div class="line"></div><div class="line"># two(two@ gmail.com)</div><div class="line"></div><div class="line">    <span class="tag">&lt;<span class="name">!-</span> <span class="attr">two.github.com</span> <span class="attr">--</span>&gt;</span></div><div class="line">    Host two.github.com</div><div class="line"></div><div class="line">　　HostName github.com</div><div class="line"></div><div class="line">　　PreferredAuthentications publickey</div><div class="line"></div><div class="line">　　IdentityFile ~/.ssh/id_rsa_two</div><div class="line"></div><div class="line">　　User two</div></pre></td></tr></table></figure>
+<h3 id="四、部署-SSH-key"><a href="#四、部署-SSH-key" class="headerlink" title="四、部署 SSH key"></a>四、部署 SSH key</h3><p>分别登陆两个 github 账号，进入 <strong>Personal settings –&gt; SSH and GPG keys</strong> ：</p>
+<p><img src="http://images2015.cnblogs.com/blog/896608/201609/896608-20160906141212879-1996635009.png" alt=""><br>点击 “new SSH key”， 把下面两个公钥的内容分别添加到相应的 github 账号中。<br><img src="http://images2015.cnblogs.com/blog/896608/201609/896608-20160906141213363-1283878125.png" alt=""></p>
+<h3 id="五、远程测试【可跳过】"><a href="#五、远程测试【可跳过】" class="headerlink" title="五、远程测试【可跳过】"></a>五、远程测试【可跳过】</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">$ ssh –T one.github.com</div><div class="line"></div><div class="line">$ ssh –T two.github.com</div></pre></td></tr></table></figure>
+<h3 id="六、使用"><a href="#六、使用" class="headerlink" title="六、使用"></a>六、使用</h3><h4 id="（1）clone-到本地"><a href="#（1）clone-到本地" class="headerlink" title="（1）clone 到本地"></a>（1）clone 到本地</h4><p>1.原来的写法：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ git clone git@github.com: one 的用户名/learngit.git</div></pre></td></tr></table></figure></p>
+<p>2.现在的写法：<br><figure class="highlight xml"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="tag">&lt;<span class="name">!-</span> <span class="attr">one.github.com</span> <span class="attr">--</span>&gt;</span></div><div class="line">$ git clone git@one.github.com: one 的用户名/learngit.git</div><div class="line"></div><div class="line"><span class="tag">&lt;<span class="name">!-</span> <span class="attr">two.github.com</span> <span class="attr">--</span>&gt;</span></div><div class="line">$ git clone git@two.github.com: two 的用户名/learngit.git</div></pre></td></tr></table></figure></p>
+<h4 id="（2）记得给这个仓库设置局部的用户名和邮箱"><a href="#（2）记得给这个仓库设置局部的用户名和邮箱" class="headerlink" title="（2）记得给这个仓库设置局部的用户名和邮箱"></a>（2）记得给这个仓库设置局部的用户名和邮箱</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">$ git config user.name &quot;one_name&quot; ; git config user.email &quot;one_email&quot;</div><div class="line"></div><div class="line">$ git config user.name &quot;two_name&quot; ; git config user.email &quot;two_email&quot;</div></pre></td></tr></table></figure>
+<h4 id="（3）上述都成功后，会发现钥匙会由灰变绿"><a href="#（3）上述都成功后，会发现钥匙会由灰变绿" class="headerlink" title="（3）上述都成功后，会发现钥匙会由灰变绿"></a>（3）上述都成功后，会发现钥匙会由灰变绿</h4><p><img src="http://images2015.cnblogs.com/blog/896608/201609/896608-20160906141214098-881485710.png" alt=""><br><img src="http://images2015.cnblogs.com/blog/896608/201609/896608-20160906141214426-402089066.png" alt=""></p>
+
+          
+        
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
+                <a class="post-title-link" href="/2016/06/11/移动端上传照片 预览+Draw on Canvas's Demo（解决 iOS 等设备照片旋转 90 度的 bug）/" itemprop="url">
+                  移动端上传照片 预览 + Draw on Canvas's Demo（解决 iOS 等设备照片旋转 90 度的 bug）
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2016-06-11T22:12:00+08:00" content="2016-06-11">
+              2016-06-11
+            </time>
+          </span>
+
+          
+            <span class="post-category" >
+              &nbsp; | &nbsp;
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/技术/" itemprop="url" rel="index">
+                    <span itemprop="name">技术</span>
+                  </a>
+                </span>
+
+                
+                
+
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                &nbsp; | &nbsp;
+                <a href="/2016/06/11/移动端上传照片 预览+Draw on Canvas's Demo（解决 iOS 等设备照片旋转 90 度的 bug）/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/06/11/移动端上传照片 预览+Draw on Canvas's Demo（解决 iOS 等设备照片旋转 90 度的 bug）/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+          
+          
+             <span id="/2016/06/11/移动端上传照片 预览+Draw on Canvas's Demo（解决 iOS 等设备照片旋转 90 度的 bug）/" class="leancloud_visitors" data-flag-title="移动端上传照片 预览 + Draw on Canvas's Demo（解决 iOS 等设备照片旋转 90 度的 bug）">
+               &nbsp; | &nbsp;
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               <span class="post-meta-item-text">阅读次数 </span>
+               <span class="leancloud-visitors-count"></span>
+              </span>
+          
+
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h2 id="背景："><a href="#背景：" class="headerlink" title="背景："></a>背景：</h2><p>本人的一个移动端 H5 项目，需求如下:</p>
+<blockquote>
+<p><code>需求一</code>：手机相册选取或拍摄照片后在页面上<strong>预览</strong><br><code>需求二</code>：然后<strong>绘制在 canvas</strong> 画布上</p>
+</blockquote>
+<p>这里，我们先看一个 demo:<br><iframe scrolling="no" width="100%" height="300" src="http://jsfiddle.net/83qfqpk8/embedded/html,css,result/light" frameborder="0" allowfullscreen></iframe></p>
+<blockquote>
+<p><code>需求一</code>： <code>drawTempPhoto</code> 方法<br><code>需求二</code>： <code>drawPhoto</code> 方法</p>
+</blockquote>
+<h3 id="操作步骤："><a href="#操作步骤：" class="headerlink" title="操作步骤："></a>操作步骤：</h3><p><img src="http://images2015.cnblogs.com/blog/896608/201606/896608-20160611221139058-105612097.png" alt=""><br>1.点击选择文件，拍摄一张照片，此时”预览：”文字下会显示你刚才拍摄的照片<br>2.再点击”draw on Canvas”，该按钮下的画布会绘制你刚才拍摄的照片</p>
+<h3 id="正常的结果："><a href="#正常的结果：" class="headerlink" title="正常的结果："></a>正常的结果：</h3><p><img src="http://images2015.cnblogs.com/blog/896608/201606/896608-20160611221140824-608883375.png" alt=""></p>
+<h2 id="正文："><a href="#正文：" class="headerlink" title="正文："></a>正文：</h2><h3 id="一、让-input-file-支持-拍照-相册-选取"><a href="#一、让-input-file-支持-拍照-相册-选取" class="headerlink" title="一、让 input file 支持 拍照 + 相册 选取"></a>一、让 input file 支持 <strong>拍照 + 相册</strong> 选取</h3><figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">&lt;input accept=<span class="string">"image/*"</span> type=<span class="string">"file"</span> id=<span class="string">"file"</span> /&gt;</div><div class="line"><span class="comment">//有一些特殊的安卓机还需要加上 capture="camera" 属性才能支持拍照</span></div></pre></td></tr></table></figure>
+<h3 id="二、需求一的预览功能使用-html5-提供的新-API：FileReader"><a href="#二、需求一的预览功能使用-html5-提供的新-API：FileReader" class="headerlink" title="二、需求一的预览功能使用 html5 提供的新 API：FileReader"></a>二、<code>需求一</code>的<strong>预览</strong>功能使用 html5 提供的新 API：<strong>FileReader</strong></h3><blockquote>
+<p>介绍：<br> FileReader 接口提供了一个异步 API，使用该 API 可以在浏览器主线程中异步访问文件系统，读取文件中的数据。</p>
+<p> API 文档：<br> <a href="https://developer.mozilla.org/zh-CN/docs/Web/API/FileReader" target="_blank" rel="external">https://developer.mozilla.org/zh-CN/docs/Web/API/FileReader</a></p>
+<p> 兼容性：<br> 主流浏览器都支持。除了 IE 有点问题，详情看下图：<br><img src="http://images2015.cnblogs.com/blog/896608/201606/896608-20160611221142027-1855846622.png" alt=""></p>
+</blockquote>
+<h4 id="使用方法（使用-drawTempPhoto-方法实现需求一）："><a href="#使用方法（使用-drawTempPhoto-方法实现需求一）：" class="headerlink" title="使用方法（使用 drawTempPhoto 方法实现需求一）："></a>使用方法（使用 <code>drawTempPhoto</code> 方法实现<code>需求一</code>）：</h4><figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div></pre></td><td class="code"><pre><div class="line"><span class="comment">//绘制照片</span></div><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">drawTempPhoto</span><span class="params">()</span> </span>&#123;</div><div class="line"></div><div class="line">    <span class="comment">//检验是否为图像文件</span></div><div class="line">    <span class="keyword">var</span> file = document.getElementById(<span class="string">"file"</span>).files[<span class="number">0</span>];</div><div class="line">    <span class="keyword">if</span> (!/image\/\w+/.test(file.type)) &#123;</div><div class="line">        alert(<span class="string">"看清楚哦，这个需要图片！"</span>);</div><div class="line">        <span class="keyword">return</span> <span class="keyword">false</span>;</div><div class="line">    &#125;</div><div class="line">    <span class="keyword">var</span> reader = <span class="keyword">new</span> FileReader();</div><div class="line">    <span class="comment">//将文件以 Data URL 形式读入页面</span></div><div class="line">    reader.readAsDataURL(file);</div><div class="line">    reader.onload = <span class="function"><span class="keyword">function</span> <span class="params">(e)</span> </span>&#123;</div><div class="line"></div><div class="line">        <span class="comment">//预览效果</span></div><div class="line">        <span class="keyword">var</span> img = $(<span class="string">"#photo"</span>)[<span class="number">0</span>];</div><div class="line">        <span class="comment">//加载图片，此处的 this.result 为 base64 格式</span></div><div class="line">        img.src = this.result;</div><div class="line"></div><div class="line">    &#125;</div><div class="line"></div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<blockquote>
+<p><img src="http://images2015.cnblogs.com/blog/896608/201606/896608-20160611221143355-1662776781.png" alt=""><br>在本人的三星 note5 的手机中，<code>需求一</code>会出现照片预览逆时针旋转 90 度的 bug（其实用下面介绍的的 exif.js 方法，可以知道 iOS 和三星所拍的照片 Orientation 值都是 6，而前者做了预览的修正，后者则直接显示了出来，导致了旋转）。</p>
+</blockquote>
+<h4 id="解决方案"><a href="#解决方案" class="headerlink" title="解决方案:"></a>解决方案:</h4><p><strong><em>判断是否为三星手机设备，然后把预览的图片顺时针旋转 90 度恢复正常（例如可以用 canvas 技术模拟预览效果）。</em></strong></p>
+<p>于是修改的 <code>drawTempPhoto</code> 方法如下【line：21-27】：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div></pre></td><td class="code"><pre><div class="line"><span class="comment">//绘制照片</span></div><div class="line">    <span class="function"><span class="keyword">function</span> <span class="title">drawTempPhoto</span><span class="params">()</span> </span>&#123;</div><div class="line"></div><div class="line">        <span class="comment">//检验是否为图像文件</span></div><div class="line">        <span class="keyword">var</span> file = document.getElementById(<span class="string">"file"</span>).files[<span class="number">0</span>];</div><div class="line">        <span class="keyword">if</span> (!/image\/\w+/.test(file.type)) &#123;</div><div class="line">            alert(<span class="string">"看清楚哦，这个需要图片！"</span>);</div><div class="line">            <span class="keyword">return</span> <span class="keyword">false</span>;</div><div class="line">        &#125;</div><div class="line">        <span class="keyword">var</span> reader = <span class="keyword">new</span> FileReader();</div><div class="line">        <span class="comment">//将文件以 Data URL 形式读入页面</span></div><div class="line">        reader.readAsDataURL(file);</div><div class="line">        reader.onload = <span class="function"><span class="keyword">function</span> <span class="params">(e)</span> </span>&#123;</div><div class="line"></div><div class="line">            <span class="comment">//预览效果</span></div><div class="line">            <span class="keyword">var</span> img = $(<span class="string">"#photo"</span>)[<span class="number">0</span>];</div><div class="line">            <span class="comment">//加载图片，此处的 this.result 为 base64 格式</span></div><div class="line">            img.src = this.result;</div><div class="line">            img.onload = <span class="function"><span class="keyword">function</span><span class="params">()</span></span>&#123;</div><div class="line"></div><div class="line">                <span class="comment">//获取照片的拍摄方向</span></div><div class="line">                <span class="keyword">var</span> orient = getPhotoOrientation(img);</div><div class="line">                alert(<span class="string">"orient1:"</span> + orient);</div><div class="line">                <span class="comment">//判断是否是三星手机</span></div><div class="line">　　          <span class="comment">// if (isSamsung) &#123;</span></div><div class="line">                      <span class="comment">// 做旋转的适配……</span></div><div class="line">                <span class="comment">// &#125;</span></div><div class="line"></div><div class="line">            &#125;;</div><div class="line"></div><div class="line">        &#125;</div><div class="line"></div><div class="line">    &#125;</div></pre></td></tr></table></figure>
+<h3 id="三、需求二绘制到-Canvas，使用-exif-js-解决-iOS（包括三星-note5）等一些手机照片旋转-90-度的-bug"><a href="#三、需求二绘制到-Canvas，使用-exif-js-解决-iOS（包括三星-note5）等一些手机照片旋转-90-度的-bug" class="headerlink" title="三、需求二绘制到 Canvas，使用 exif.js 解决 iOS（包括三星 note5）等一些手机照片旋转 90 度的 bug"></a>三、<code>需求二</code>绘制到 Canvas，使用 exif.js 解决 iOS（包括三星 note5）等一些手机照片旋转 90 度的 bug</h3><p>在 iOS 上，表现如下：<br><img src="http://images2015.cnblogs.com/blog/896608/201606/896608-20160611221144371-343240701.png" alt=""></p>
+<p>可见，在 <strong>iOS</strong> 上第一张图正常，而第二张图<strong>逆时针旋转了 90 度</strong>，而其他的<strong>安卓</strong>两步都是<strong>正常的显示</strong>。</p>
+<p>那我们来看看 <strong>exif.js</strong> 是什么？</p>
+<blockquote>
+<p>介绍：<br>Exif.js 提供了 JavaScript 读取图像的原始数据的功能扩展，例如：<strong>拍照方向</strong>、相机设备型号、拍摄时间、ISO 感光度、GPS 地理位置等数据。</p>
+<p>兼容性：<br>EXIF 数据主要来自拍摄的照片，多用于移动端开发，PC 端也会用到，此插件兼容主流浏览器，IE10 以下不支持。</p>
+<p>下载地址：<br><a href="https://github.com/exif-js/exif-js" target="_blank" rel="external">https://github.com/exif-js/exif-js</a></p>
+</blockquote>
+<p>这里我们知道了 exif.js 其实是获取一张拍摄照片的元信息的，进而获取它最初的拍照方向，这很可能跟 iOS 图片旋转的 bug 有关。</p>
+<p>而 exif.js 提供的一张照片的 <strong>Orientation</strong> 属性如下：<br><img src="http://images2015.cnblogs.com/blog/896608/201606/896608-20160611221145371-963458118.gif" alt=""></p>
+<h4 id="使用方法："><a href="#使用方法：" class="headerlink" title="使用方法："></a>使用方法：</h4><p>1.我首先引入 <code>exif.js</code>：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">&lt;script src=<span class="string">"./js/exif.js"</span>&gt;&lt;/script&gt;</div></pre></td></tr></table></figure>
+<p>2.然后封装成 <code>getPhotoOrientation</code> 方法：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line"><span class="comment">//获取照片的元信息（拍摄方向）</span></div><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">getPhotoOrientation</span><span class="params">(img)</span></span>&#123;</div><div class="line">  <span class="keyword">var</span> orient;</div><div class="line">  EXIF.getData(img, <span class="function"><span class="keyword">function</span> <span class="params">()</span> </span>&#123;</div><div class="line">      orient = EXIF.getTag(this, <span class="string">'Orientation'</span>);</div><div class="line">  &#125;);</div><div class="line">  <span class="keyword">return</span> orient;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>3.分别在操作步骤一选择图片和操作步骤二 draw on Canvas，Alert 照片的 Orientation 值，本人的测试机有限，请见谅，结果如下：</p>
+<table>
+<thead>
+<tr>
+<th>手机型号</th>
+<th>Orientation值</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>iphone 6S</td>
+<td><strong>6</strong></td>
+</tr>
+<tr>
+<td>小米4S</td>
+<td>undefined</td>
+</tr>
+<tr>
+<td>华为荣耀4A</td>
+<td>1</td>
+</tr>
+<tr>
+<td>PC</td>
+<td>undefined</td>
+</tr>
+</tbody>
+</table>
+<p>可以看到，小米 4S 和 PC 都是 undefined，表示图片没有拍摄方向或者根本没记录，华为荣耀 4A 是 1，表示的是正确的方向，以上都没问题。但 iphone 6S 为 6！<strong>所以之所以出现了图片的旋转，是因为它本身的 Orientation 就不正常！！</strong></p>
+<p><strong><em>因此解决这个 bug 的思路是：获取到照片拍摄的方向，对 ios 照片进行角度旋转修正。</em></strong></p>
+<h4 id="解决方案："><a href="#解决方案：" class="headerlink" title="解决方案："></a>解决方案：</h4><p>修改后的 demo:<br><iframe scrolling="no" width="100%" height="300" src="http://jsfiddle.net/k3z5ev26/embedded/javascript,html,css,result/light" frameborder="0" allowfullscreen></iframe></p>
+<p>除了上面引入的 <code>exif.js</code> 和添加的 <code>getPhotoOrientation</code> 方法，我又修改了 <code>drawPhoto</code> 方法：</p>
+<p>1.旧 <code>drawPhoto</code> 方法：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div></pre></td><td class="code"><pre><div class="line"><span class="comment">//绘制照片</span></div><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">drawPhoto</span><span class="params">(photo, x, y, w, h)</span> </span>&#123;</div><div class="line"></div><div class="line">    <span class="keyword">var</span> canvas = document.getElementById(<span class="string">"canvas"</span>);</div><div class="line">    <span class="keyword">if</span> (canvas.getContext) &#123;</div><div class="line">        <span class="keyword">var</span> ctx = canvas.getContext(<span class="string">"2d"</span>);</div><div class="line"></div><div class="line">        <span class="comment">//draw on Canvas</span></div><div class="line">        <span class="keyword">var</span> img = <span class="keyword">new</span> Image();</div><div class="line">        img.onload = <span class="function"><span class="keyword">function</span> <span class="params">()</span> </span>&#123;</div><div class="line"></div><div class="line">            <span class="keyword">var</span> canvas_w = Number(ctx.canvas.width);</div><div class="line">            <span class="keyword">var</span> canvas_h = Number(ctx.canvas.height);</div><div class="line"></div><div class="line">            <span class="comment">// 执行 Canvas 的 drawImage 语句</span></div><div class="line">            ctx.drawImage(img, x, y, w, h);</div><div class="line"></div><div class="line">        &#125;</div><div class="line">        img.src = photo.src; <span class="comment">// 设置图片源地址</span></div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>2.新 <code>drawPhoto</code> 方法【line：4-6，19-30】：<br><figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div></pre></td><td class="code"><pre><div class="line"><span class="comment">//绘制照片</span></div><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">drawPhoto</span><span class="params">(photo, x, y, w, h)</span> </span>&#123;</div><div class="line"></div><div class="line">    <span class="comment">//获取照片的拍摄方向</span></div><div class="line">    <span class="keyword">var</span> orient = getPhotoOrientation(photo);</div><div class="line">    alert(<span class="string">"orient2:"</span>+orient);</div><div class="line"></div><div class="line">    <span class="keyword">var</span> canvas = document.getElementById(<span class="string">"canvas"</span>);</div><div class="line">    <span class="keyword">if</span> (canvas.getContext) &#123;</div><div class="line">        <span class="keyword">var</span> ctx = canvas.getContext(<span class="string">"2d"</span>);</div><div class="line"></div><div class="line">        <span class="comment">//draw on Canvas</span></div><div class="line">        <span class="keyword">var</span> img = <span class="keyword">new</span> Image();</div><div class="line">        img.onload = <span class="function"><span class="keyword">function</span> <span class="params">()</span> </span>&#123;</div><div class="line"></div><div class="line">            <span class="keyword">var</span> canvas_w = Number(ctx.canvas.width);</div><div class="line">            <span class="keyword">var</span> canvas_h = Number(ctx.canvas.height);</div><div class="line"></div><div class="line">            <span class="comment">//判断图片拍摄方向是否旋转了 90 度</span></div><div class="line">            <span class="keyword">if</span> (orient == <span class="number">6</span>) &#123;</div><div class="line">                ctx.save();<span class="comment">//保存状态</span></div><div class="line">                ctx.translate(canvas_w / <span class="number">2</span>, canvas_h / <span class="number">2</span>);<span class="comment">//设置画布上的(0,0)位置，也就是旋转的中心点</span></div><div class="line">                ctx.rotate(<span class="number">90</span> * Math.PI / <span class="number">180</span>);<span class="comment">//把画布旋转 90 度</span></div><div class="line">                <span class="comment">// 执行 Canvas 的 drawImage 语句</span></div><div class="line">                ctx.drawImage(img, Number(y) - canvas_h / <span class="number">2</span>, Number(x) - canvas_w / <span class="number">2</span>, h, w);<span class="comment">//把图片绘制在画布 translate 之前的中心点，</span></div><div class="line">                ctx.restore();<span class="comment">//恢复状态</span></div><div class="line">            &#125; <span class="keyword">else</span> &#123;</div><div class="line">                <span class="comment">// 执行 Canvas 的 drawImage 语句</span></div><div class="line">                ctx.drawImage(img, x, y, w, h);</div><div class="line">            &#125;</div><div class="line"></div><div class="line">        &#125;</div><div class="line">        img.src = photo.src; <span class="comment">// 设置图片源地址</span></div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>运行结果如下：<br><img src="http://images2015.cnblogs.com/blog/896608/201606/896608-20160611221147277-517861637.png" alt=""></p>
+<p>完美~</p>
+
+          
+        
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
                 <a class="post-title-link" href="/2016/06/11/移动端禁止页面下滑/" itemprop="url">
                   移动端禁止页面下滑
                 </a>
@@ -324,6 +668,25 @@
             </time>
           </span>
 
+          
+            <span class="post-category" >
+              &nbsp; | &nbsp;
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/技术/" itemprop="url" rel="index">
+                    <span itemprop="name">技术</span>
+                  </a>
+                </span>
+
+                
+                
+
+              
+            </span>
           
 
           
@@ -440,6 +803,25 @@
             </time>
           </span>
 
+          
+            <span class="post-category" >
+              &nbsp; | &nbsp;
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/技术/" itemprop="url" rel="index">
+                    <span itemprop="name">技术</span>
+                  </a>
+                </span>
+
+                
+                
+
+              
+            </span>
           
 
           
@@ -562,6 +944,25 @@
           </span>
 
           
+            <span class="post-category" >
+              &nbsp; | &nbsp;
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/技术/" itemprop="url" rel="index">
+                    <span itemprop="name">技术</span>
+                  </a>
+                </span>
+
+                
+                
+
+              
+            </span>
+          
 
           
             
@@ -683,6 +1084,25 @@
             </time>
           </span>
 
+          
+            <span class="post-category" >
+              &nbsp; | &nbsp;
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/技术/" itemprop="url" rel="index">
+                    <span itemprop="name">技术</span>
+                  </a>
+                </span>
+
+                
+                
+
+              
+            </span>
           
 
           
@@ -850,6 +1270,25 @@
           </span>
 
           
+            <span class="post-category" >
+              &nbsp; | &nbsp;
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/技术/" itemprop="url" rel="index">
+                    <span itemprop="name">技术</span>
+                  </a>
+                </span>
+
+                
+                
+
+              
+            </span>
+          
 
           
             
@@ -964,6 +1403,25 @@
             </time>
           </span>
 
+          
+            <span class="post-category" >
+              &nbsp; | &nbsp;
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/技术/" itemprop="url" rel="index">
+                    <span itemprop="name">技术</span>
+                  </a>
+                </span>
+
+                
+                
+
+              
+            </span>
           
 
           
@@ -1080,6 +1538,25 @@
             </time>
           </span>
 
+          
+            <span class="post-category" >
+              &nbsp; | &nbsp;
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/技术/" itemprop="url" rel="index">
+                    <span itemprop="name">技术</span>
+                  </a>
+                </span>
+
+                
+                
+
+              
+            </span>
           
 
           
@@ -1205,6 +1682,25 @@
           </span>
 
           
+            <span class="post-category" >
+              &nbsp; | &nbsp;
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/技术/" itemprop="url" rel="index">
+                    <span itemprop="name">技术</span>
+                  </a>
+                </span>
+
+                
+                
+
+              
+            </span>
+          
 
           
             
@@ -1283,274 +1779,6 @@
 
 
     
-      
-
-  
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-            
-            
-              
-                
-                <a class="post-title-link" href="/2016/05/22/使用 SQL 命令 OPTIMIZE TABLE 释放表空间/" itemprop="url">
-                  使用 SQL 命令 OPTIMIZE TABLE 释放表空间
-                </a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            <span class="post-meta-item-icon">
-              <i class="fa fa-calendar-o"></i>
-            </span>
-            <span class="post-meta-item-text">发表于</span>
-            <time itemprop="dateCreated" datetime="2016-05-22T14:24:00+08:00" content="2016-05-22">
-              2016-05-22
-            </time>
-          </span>
-
-          
-
-          
-            
-              <span class="post-comments-count">
-                &nbsp; | &nbsp;
-                <a href="/2016/05/22/使用 SQL 命令 OPTIMIZE TABLE 释放表空间/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/05/22/使用 SQL 命令 OPTIMIZE TABLE 释放表空间/" itemprop="commentsCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-
-          
-          
-             <span id="/2016/05/22/使用 SQL 命令 OPTIMIZE TABLE 释放表空间/" class="leancloud_visitors" data-flag-title="使用 SQL 命令 OPTIMIZE TABLE 释放表空间">
-               &nbsp; | &nbsp;
-               <span class="post-meta-item-icon">
-                 <i class="fa fa-eye"></i>
-               </span>
-               <span class="post-meta-item-text">阅读次数 </span>
-               <span class="leancloud-visitors-count"></span>
-              </span>
-          
-
-          
-        </div>
-      </header>
-    
-
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h2 id="前提："><a href="#前提：" class="headerlink" title="前提："></a>前提：</h2><p>1.删除了表的一大部分</p>
-<p>2.已经对含有可变长度行的表（含有 VARCHAR, BLOB 或 TEXT 列的表）进行了很多更改</p>
-<h2 id="作用："><a href="#作用：" class="headerlink" title="作用："></a>作用：</h2><p>利用未使用的空间，释放出来，并整理数据文件的碎片</p>
-<h2 id="频率："><a href="#频率：" class="headerlink" title="频率："></a>频率：</h2><p>不需要经常运行，每周一次或每月一次</p>
-<h2 id="试用范围："><a href="#试用范围：" class="headerlink" title="试用范围："></a>试用范围：</h2><p>OPTIMIZE TABLE 只对 MyISAM, BDB 和 InnoDB 表起作用</p>
-<h2 id="注意事项："><a href="#注意事项：" class="headerlink" title="注意事项："></a>注意事项：</h2><p>1.在 OPTIMIZE TABLE 运行过程中，MySQL 会锁定表。如果涉及海量的数据表，应该考虑使用一些运维手段避免现网的服务受到影响</p>
-<p>2.使用 alter table table_name engine=innodb 也可以同样达到释放空洞的效果。这是由于在转换数据引擎（即便没有真正转换）的时候，mysql 也会将表中的数据读取出来，再重新写入，在这个过程中，空洞自然就没有了</p>
-<hr>
-<h4 id="Reference："><a href="#Reference：" class="headerlink" title="Reference："></a>Reference：</h4><p><a href="http://blog.sina.com.cn/s/blog_3dbab2840100c13p.html" target="_blank" rel="external"> mysql 中 OPTIMIZE TABLE 的作用</a></p>
-
-          
-        
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
-      
-
-  
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-            
-            
-              
-                
-                <a class="post-title-link" href="/2016/05/22/常用 mysql 数据库引擎——MyISAM 和 InnoDB 区别/" itemprop="url">
-                  常用 mysql 数据库引擎——MyISAM 和 InnoDB 区别
-                </a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            <span class="post-meta-item-icon">
-              <i class="fa fa-calendar-o"></i>
-            </span>
-            <span class="post-meta-item-text">发表于</span>
-            <time itemprop="dateCreated" datetime="2016-05-22T14:20:00+08:00" content="2016-05-22">
-              2016-05-22
-            </time>
-          </span>
-
-          
-
-          
-            
-              <span class="post-comments-count">
-                &nbsp; | &nbsp;
-                <a href="/2016/05/22/常用 mysql 数据库引擎——MyISAM 和 InnoDB 区别/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/05/22/常用 mysql 数据库引擎——MyISAM 和 InnoDB 区别/" itemprop="commentsCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-
-          
-          
-             <span id="/2016/05/22/常用 mysql 数据库引擎——MyISAM 和 InnoDB 区别/" class="leancloud_visitors" data-flag-title="常用 mysql 数据库引擎——MyISAM 和 InnoDB 区别">
-               &nbsp; | &nbsp;
-               <span class="post-meta-item-icon">
-                 <i class="fa fa-eye"></i>
-               </span>
-               <span class="post-meta-item-text">阅读次数 </span>
-               <span class="leancloud-visitors-count"></span>
-              </span>
-          
-
-          
-        </div>
-      </header>
-    
-
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h2 id="背景："><a href="#背景：" class="headerlink" title="背景："></a>背景：</h2><p>昨天做项目时，发现使用事务后回滚不了，后来把数据库引擎从 MyISAM 换成 InnoDB 后果断好了，如下图：</p>
-<p><img src="http://images2015.cnblogs.com/blog/896608/201605/896608-20160522141935919-1781780255.png" alt=""></p>
-<h2 id="正文："><a href="#正文：" class="headerlink" title="正文："></a>正文：</h2><p><strong>MyISAM</strong> 和 <strong>InnoDB</strong>是 mysql 常用的数据库引擎，他们的区别如下：</p>
-<table>
-<thead>
-<tr>
-<th>数据库引擎</th>
-<th style="text-align:center">适用范围</th>
-<th style="text-align:center">性能</th>
-<th style="text-align:center">事务</th>
-<th style="text-align:center">外键</th>
-<th style="text-align:center">数据受损恢复</th>
-<th style="text-align:center">表的大小</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>MyISAM</td>
-<td style="text-align:center">适合频繁查询</td>
-<td style="text-align:center">高</td>
-<td style="text-align:center">×</td>
-<td style="text-align:center">×</td>
-<td style="text-align:center">×</td>
-<td style="text-align:center">小</td>
-</tr>
-<tr>
-<td>InnoDB</td>
-<td style="text-align:center">适合频繁修改</td>
-<td style="text-align:center">中</td>
-<td style="text-align:center">√</td>
-<td style="text-align:center">√</td>
-<td style="text-align:center">√</td>
-<td style="text-align:center">大</td>
-</tr>
-</tbody>
-</table>
-<blockquote>
-<p>MyISAM 是 MySQL 的 ISAM 扩展格式和缺省的数据库引擎。</p>
-</blockquote>
-<hr>
-<h4 id="Reference："><a href="#Reference：" class="headerlink" title="Reference："></a>Reference：</h4><p><a href="http://www.jb51.net/article/38004.htm" target="_blank" rel="external"> MySQL 数据库引擎介绍、区别、创建和性能测试的深入分析</a></p>
-
-          
-        
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
   </section>
 
   
@@ -1596,17 +1824,24 @@
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/archives">
-              <span class="site-state-item-count">23</span>
+              <span class="site-state-item-count">25</span>
               <span class="site-state-item-name">日志</span>
             </a>
           </div>
 
           
+            <div class="site-state-item site-state-categories">
+              <a href="/categories">
+                <span class="site-state-item-count">1</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
 
           
             <div class="site-state-item site-state-tags">
               <a href="/tags">
-                <span class="site-state-item-count">5</span>
+                <span class="site-state-item-count">6</span>
                 <span class="site-state-item-name">标签</span>
               </a>
             </div>
@@ -1617,6 +1852,53 @@
         
 
         <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://www.zhihu.com/people/xjnotxj" target="_blank" title="知乎">
+                  
+                    <i class="fa fa-fw fa-globe"></i>
+                  
+                  知乎
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="https://www.douban.com/people/xjnotxj/" target="_blank" title="豆瓣">
+                  
+                    <i class="fa fa-fw fa-globe"></i>
+                  
+                  豆瓣
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/xjnotxj" target="_blank" title="GitHub">
+                  
+                    <i class="fa fa-fw fa-github"></i>
+                  
+                  GitHub
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://www.cnblogs.com/xjnotxj/" target="_blank" title="博客园">
+                  
+                    <i class="fa fa-fw fa-globe"></i>
+                  
+                  博客园
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://www.jianshu.com/users/d7b6cb158217/latest_articles" target="_blank" title="简书">
+                  
+                    <i class="fa fa-fw fa-globe"></i>
+                  
+                  简书
+                </a>
+              </span>
+            
           
         </div>
 

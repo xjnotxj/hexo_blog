@@ -2,6 +2,7 @@
 title: 使用 SQL 命令 OPTIMIZE TABLE 释放表空间
 date:  2016-05-22 14:24:00
 tags: SQL
+categories: 技术
 ---
   
 ## 前提：

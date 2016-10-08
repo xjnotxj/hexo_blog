@@ -2,6 +2,7 @@
 title: 从重置 input file 标签中看 jQuery 的  .val() 和 .attr(“value”) 区别
 date: 2016-06-10 21:28:00
 tags: 前端
+categories: 技术
 ---
   
 ## 背景：

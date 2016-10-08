@@ -2,6 +2,7 @@
 title: BrowserSync - 浏览器同步测试工具
 date: 2016-06-01 22:46:00
 tags: 前端
+categories: 技术
 ---
   
 ## 背景：

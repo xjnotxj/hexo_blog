@@ -2,6 +2,7 @@
 title: 移动端用 js 与 jquery 实时监听输入框值的改动
 date: 2016-06-10 22:01:00
 tags: 前端
+categories: 技术
 ---
   
 ## 背景：

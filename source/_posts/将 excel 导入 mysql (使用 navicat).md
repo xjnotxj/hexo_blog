@@ -2,6 +2,7 @@
 title: 将 excel 导入 mysql (使用 navicat)
 date: 2016-03-21 22:09:00
 tags: SQL
+categories: 技术
 ---
   
 ## excel:
